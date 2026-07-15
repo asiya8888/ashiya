@@ -1,11 +1,16 @@
 import { useState } from 'react';
+import { getOAuthRedirectUrl } from '../lib/auth';
 import { supabase } from '../lib/supabase';
 
-export function Auth() {
+type AuthProps = {
+  initialMessage?: string;
+};
+
+export function Auth({ initialMessage = '' }: AuthProps) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [mode, setMode] = useState<'signin' | 'signup'>('signin');
-  const [message, setMessage] = useState('');
+  const [message, setMessage] = useState(initialMessage);
   const [busy, setBusy] = useState(false);
 
   async function handleSubmit(e: React.FormEvent) {
@@ -32,7 +37,7 @@ export function Auth() {
     setMessage('');
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
-      options: { redirectTo: window.location.origin },
+      options: { redirectTo: getOAuthRedirectUrl() },
     });
     if (error) {
       setMessage(error.message);
