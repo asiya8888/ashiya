@@ -5,100 +5,91 @@ export type DialogueProfile = {
   answers: string[];
 };
 
-const humanProfiles: DialogueProfile[] = [
-  {
-    dialogue: [
-      "I'm sorry for bothering you this late.",
-      'I got separated from my friends a few hours ago.',
-      'Could I stay here until sunrise?',
-    ],
-    answers: [
-      "My name is Mara. I'm twenty-six.",
-      'We came from the north trail before the storm buried it.',
-      "I'm alone now. I kept calling, but nobody answered.",
-      'I fell twice coming down the ridge. I just need warmth.',
-    ],
-  },
-  {
-    dialogue: [
-      "I didn't expect there to be a cabin here.",
-      "I haven't eaten anything since this morning.",
-      "Please don't leave me outside.",
-    ],
-    answers: [
-      "I'm Evan. I was hiking toward the radio tower.",
-      'The wind turned me around until every tree looked the same.',
-      'Outside is all white. I can barely see the porch.',
-      'My hands are numb. I can hardly move my fingers.',
-    ],
-  },
-  {
-    dialogue: [
-      'My daughter and I lost the road before dark.',
-      'She is too cold to keep walking.',
-      'We will sit by the door if that makes you feel safer.',
-    ],
-    answers: [
-      "I'm Clara. She's nine.",
-      'Our car is stuck somewhere below the pass.',
-      'We heard something moving behind us, but never saw it.',
-      'Please. She has not stopped shaking.',
-    ],
-  },
-];
-
-const mimicProfiles: DialogueProfile[] = [
-  {
-    dialogue: [
-      "It's cold tonight.",
-      "You don't have to be afraid of me.",
-      'Why are you staring at my face?',
-    ],
-    answers: [
-      'My name is... Michael.',
-      'I came from the trees where the path ended.',
-      'Outside is outside. It is behind me.',
-      'I am cold enough for you to believe me.',
-    ],
-  },
-  {
-    dialogue: [
-      'I have been walking for a very long time.',
-      'May I come inside?',
-      'You look frightened.',
-    ],
-    answers: [
-      "I'm thirty. Maybe thirty-one.",
-      'I was with others, but they became quiet.',
-      'The snow covered my tracks too quickly.',
-      'I can wait. I am good at waiting.',
-    ],
-  },
-  {
-    dialogue: [
-      'I saw your light from far away.',
-      'It looks warm in there.',
-      'I can be normal if you need me to be.',
-    ],
-    answers: [
-      'People call me Jonas.',
-      'I came from the lower road. I think that is what it is called.',
-      'There is nothing outside except weather.',
-      'I am alone in the way humans are alone.',
-    ],
-  },
-];
-
 const pick = <T,>(items: T[]) => items[Math.floor(Math.random() * items.length)];
 
-export function makeDialogueProfile(kind: VisitorKind, night: number) {
-  if (kind === 'human') return pick(humanProfiles);
-  if (night > 2) return pick(mimicProfiles);
+const humanStarts = [
+  "I'm sorry for knocking this late",
+  "I know you don't know me",
+  "I didn't think anyone lived this far up the mountain",
+  "Please listen before you decide anything",
+  "I wouldn't be here if I had anywhere else to go",
+];
 
-  return Math.random() > 0.45
-    ? pick(mimicProfiles)
-    : {
-        dialogue: ['I do not feel cold.', 'Please allow me inside.', 'Your fire smells like safety.'],
-        answers: ['My name is... Michael.', 'Outside?', 'I came from where people come from.'],
-      };
+const humanSituations = [
+  'I lost the trail when the snow came down and I have been walking in circles for hours',
+  'my friends and I got separated near the ridge and I stopped hearing them after the wind picked up',
+  'my car slid off the lower road and the windows broke before I could get it started again',
+  'I followed what looked like a lantern through the trees, but it vanished when I reached your porch',
+  'I tried to wait under the pines, but my hands are too numb to hold my pack anymore',
+];
+
+const humanDetails = [
+  'I can stay by the door if that makes you feel safer',
+  'I do not need food, just a place out of the wind',
+  'you can keep the light on me the whole time',
+  'I swear I will leave as soon as the sun comes up',
+  'I am scared too, but I am still a person asking for help',
+];
+
+const mimicStarts = [
+  "It's strange how warm it must be inside your cabin",
+  "You look tired, and I don't want to frighten you",
+  "I understand why you hesitate",
+  "I have been standing in the snow long enough to learn your silence",
+  "You don't have to open the door quickly",
+];
+
+const mimicSituations = [
+  'I followed your window because it was the only shape in the dark that looked alive',
+  'I was with others earlier, but they stopped answering and I kept walking without them',
+  'the mountain keeps changing behind me, so I would rather not look back',
+  'I have practiced what to say, but it is harder when you stare at me like that',
+  'I only need to be inside until the night is finished with us',
+];
+
+const mimicDetails = [
+  'I can be quiet if quiet makes me easier to trust',
+  'I do not understand why my face bothers you',
+  'it would be cruel to leave someone outside after they found you',
+  'your fire sounds close enough to remember',
+  'if I were dangerous, I would not ask so gently',
+];
+
+const humanAnswers = [
+  'My name is Mara, and I came from the north trail before the storm covered the markers.',
+  'I was with two friends earlier, but the wind took their voices before I saw where they went.',
+  'Outside is all white movement; I can barely tell where your porch ends.',
+  'I fell coming down the ridge, but I can still walk if I can warm up first.',
+  'I am trying not to panic because I know panic makes people harder to believe.',
+];
+
+const mimicAnswers = [
+  'My name is Michael, or at least that is the name that came with me to your door.',
+  'I came from the trees, from the place where the path stops making decisions.',
+  'Outside is behind me, and I would rather not turn around to describe it.',
+  'I am alone in the way a person is alone when no one is watching them.',
+  'I am answering carefully because careless answers make humans suspicious.',
+];
+
+const sentence = (start: string, situation: string, detail: string) => `${start}; ${situation}, and ${detail}.`;
+
+export function makeDialogueProfile(kind: VisitorKind, night: number): DialogueProfile {
+  if (kind === 'human') {
+    return {
+      dialogue: [sentence(pick(humanStarts), pick(humanSituations), pick(humanDetails))],
+      answers: humanAnswers,
+    };
+  }
+
+  const convincing = night > 2 && Math.random() > 0.35;
+  return {
+    dialogue: [
+      sentence(
+        pick(convincing ? humanStarts : mimicStarts),
+        pick(convincing ? humanSituations : mimicSituations),
+        pick(convincing ? humanDetails : mimicDetails),
+      ),
+    ],
+    answers: mimicAnswers,
+  };
 }

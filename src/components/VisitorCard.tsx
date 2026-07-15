@@ -34,11 +34,7 @@ export function VisitorCard({
         <p className="label">{visitor.groupSize > 1 ? 'Multiple visitors' : 'Someone is at the door'}</p>
         <h2>{visitor.name}</h2>
         {visitor.eventText && <p className="event-text">{visitor.eventText}</p>}
-        {visitor.dialogue.map((line) => (
-          <p className="quote" key={line}>
-            "{line}"
-          </p>
-        ))}
+        <p className="quote">"{visitor.dialogue[0]}"</p>
       </div>
       <InteractionLog entries={entries} outcome={outcome} />
       <div className="choices">

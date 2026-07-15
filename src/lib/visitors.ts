@@ -12,6 +12,8 @@ export type FaceFeature = {
   clothes: 'parka' | 'scarf' | 'coat';
   age: 'young' | 'adult' | 'older';
   brows: 'soft' | 'worried' | 'low';
+  expression: 'afraid' | 'tired' | 'calm' | 'strained';
+  lighting: 'left' | 'right' | 'low';
   scar: boolean;
   shadow: boolean;
   breath: boolean;
@@ -76,6 +78,8 @@ const makeFace = (kind: VisitorKind, night: number): FaceFeature => {
     clothes: pick(['parka', 'scarf', 'coat']),
     age: pick(['young', 'adult', 'older']),
     brows: kind === 'skinwalker' ? pick(['low', 'worried', 'soft']) : pick(['soft', 'worried']),
+    expression: kind === 'skinwalker' ? pick(['calm', 'strained', 'afraid']) : pick(['afraid', 'tired', 'strained']),
+    lighting: pick(['left', 'right', 'low']),
     scar: Math.random() > 0.72,
     shadow: kind === 'skinwalker' ? Math.random() > 0.25 : Math.random() > 0.82,
     breath: kind === 'human' || (subtle && Math.random() > 0.55),

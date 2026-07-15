@@ -15,6 +15,10 @@
   position: absolute;
 }
 
+.portrait--left::after { background: linear-gradient(100deg, transparent 10%, #000b 68%); }
+.portrait--right::after { background: linear-gradient(260deg, transparent 10%, #000b 68%); }
+.portrait--low::after { background: linear-gradient(0deg, transparent 0 34%, #000b 78%); }
+
 .shoulders {
   background: #2e3743;
   border-radius: 45% 45% 0 0;
@@ -47,6 +51,10 @@
 .face--frozen { background: #b8c8cd; }
 .face--older { box-shadow: inset -24px 13px 28px #2b171642, inset 0 -16px 22px #5a474455; }
 .face-shadow { background: #02020255; inset: 0 0 0 54%; position: absolute; }
+.face--tired { transform: translateX(-50%) scaleY(0.96); }
+.face--afraid { transform: translateX(-50%) scale(0.98, 1.03); }
+.face--calm { transform: translateX(-50%) scale(1.01); }
+.face--strained { transform: translateX(-50%) skewX(-1deg); }
 
 .eye, .brow, .nose, .scar, .mouth, .breath { position: absolute; }
 .eye {
@@ -79,6 +87,9 @@
 .brow--worried.brow--left { transform: rotate(12deg); }
 .brow--worried.brow--right { transform: rotate(-12deg); }
 .brow--low { top: 58px; }
+.face--afraid .brow--left { transform: rotate(-10deg); }
+.face--afraid .brow--right { transform: rotate(10deg); }
+.face--calm .brow { top: 56px; }
 
 .nose {
   border-left: 8px solid transparent;
@@ -108,6 +119,8 @@
 
 .mouth--tense { height: 4px; }
 .mouth--too-wide { height: 13px; left: 24px; width: 80px; }
+.face--calm .mouth { height: 5px; }
+.face--afraid .mouth { height: 13px; width: 34px; }
 .breath {
   animation: breathe 2.8s ease-in-out infinite;
   background: #dbe8f055;

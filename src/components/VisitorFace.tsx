@@ -8,9 +8,9 @@ export function VisitorFace({ face }: VisitorFaceProps) {
   const eyes = face.eyes === 'three' ? [0, 1, 2] : [0, 1];
 
   return (
-    <div className={`portrait portrait--${face.clothes}`}>
+    <div className={`portrait portrait--${face.clothes} portrait--${face.lighting}`}>
       <span className="shoulders" />
-      <div className={`face face--${face.eyes} face--${face.skin} face--${face.age}`}>
+      <div className={`face face--${face.eyes} face--${face.skin} face--${face.age} face--${face.expression}`}>
         <span className={`hair hair--${face.hair}`} />
         {face.shadow && <span className="face-shadow" />}
         <span className={`brow brow--left brow--${face.brows}`} />

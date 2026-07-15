@@ -1,3 +1,5 @@
+import { noiseBurst } from './noise';
+
 type LegacyAudioWindow = Window & typeof globalThis & {
   webkitAudioContext?: typeof AudioContext;
 };
@@ -10,7 +12,6 @@ let windGain: GainNode | null = null;
 let droneGain: GainNode | null = null;
 let warmthGain: GainNode | null = null;
 let fireTimer: number | null = null;
-let rareTimer: number | null = null;
 
 function getAudio() {
   const AudioCtor = window.AudioContext || (window as LegacyAudioWindow).webkitAudioContext;
@@ -40,22 +41,10 @@ function tone(frequency: number, start: number, length: number, volume: number, 
 
 function scheduleFire() {
   fireTimer = window.setTimeout(() => {
-    tone(260 + Math.random() * 240, 0, 0.035, 0.035, 'triangle');
-    if (Math.random() > 0.65) tone(90 + Math.random() * 50, 0.03, 0.05, 0.025, 'sawtooth');
+    const context = getAudio();
+    if (context) noiseBurst(context, 0, 0.035 + Math.random() * 0.035, 0.018);
     scheduleFire();
-  }, 240 + Math.random() * 950);
-}
-
-function scheduleRareSound() {
-  rareTimer = window.setTimeout(() => {
-    const options = [
-      () => tone(44, 0, 0.55, 0.035, 'sine'),
-      () => tone(118, 0, 0.12, 0.03, 'triangle'),
-      () => [0, 0.28].forEach((delay) => tone(68, delay, 0.08, 0.025, 'sine')),
-    ];
-    options[Math.floor(Math.random() * options.length)]();
-    scheduleRareSound();
-  }, 6500 + Math.random() * 9000);
+  }, 180 + Math.random() * 900);
 }
 
 export function playKnock() {
@@ -71,9 +60,11 @@ export function playKnock() {
 }
 
 export function playJumpscare() {
-  [0, 0.04, 0.08, 0.12].forEach((delay) => tone(520 + delay * 1800, delay, 0.11, 0.9));
-  tone(58, 0, 0.58, 1, 'sawtooth');
-  tone(180, 0.16, 0.32, 0.85, 'triangle');
+  const context = getAudio();
+  if (context) noiseBurst(context, 0, 0.42, 0.95);
+  [0, 0.035, 0.07, 0.11].forEach((delay) => tone(620 + delay * 2400, delay, 0.13, 1, 'sawtooth'));
+  tone(42, 0, 0.7, 1, 'sawtooth');
+  tone(150, 0.08, 0.42, 0.95, 'triangle');
 }
 
 export function startAmbience() {
@@ -108,7 +99,6 @@ export function startAmbience() {
   warmth.start();
 
   scheduleFire();
-  scheduleRareSound();
 }
 
 export function setMusicIntensity(isSuspicious: boolean) {
@@ -122,9 +112,7 @@ export function setMusicIntensity(isSuspicious: boolean) {
 
 export function stopAmbience() {
   if (fireTimer) window.clearTimeout(fireTimer);
-  if (rareTimer) window.clearTimeout(rareTimer);
   fireTimer = null;
-  rareTimer = null;
 
   [wind, drone, warmth].forEach((node) => {
     node?.stop();
