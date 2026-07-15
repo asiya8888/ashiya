@@ -55,12 +55,11 @@
 .snowflake {
   animation: snow linear infinite;
   background: #f5fbff;
-  border-radius: 50%;
+  border-radius: 48% 62% 43% 58%;
   box-shadow: 0 0 8px #fff8;
-  height: 5px;
+  clip-path: polygon(50% 0, 64% 34%, 100% 45%, 66% 61%, 56% 100%, 40% 66%, 0 55%, 36% 39%);
   position: absolute;
   top: -8px;
-  width: 5px;
 }
 
 .door {
@@ -106,7 +105,7 @@
   z-index: 1;
 }
 
-@keyframes snow { to { transform: translate(-28px, 245px); } }
+@keyframes snow { to { transform: translate(var(--drift), 245px) rotate(var(--spin)); } }
 @keyframes candle { 50% { opacity: 0.72; transform: scale(1.03); } }
 @keyframes shadows { 50% { transform: translateX(-8%); opacity: 0.5; } }
 

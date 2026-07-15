@@ -14,7 +14,7 @@ export function GameHud({ lives, score, night, visitorNumber, totalVisitors, onR
   return (
     <header className="hud">
       <div>
-        <p className="label">THE LAST CABIN</p>
+        <p className="label">WHITEOUT</p>
         <h1>Night Watch</h1>
       </div>
       <div className="stats">

@@ -7,8 +7,6 @@
 
 .login-cabin {
   background:
-    radial-gradient(circle at 28% 44%, #d09254 0 4%, transparent 5%),
-    radial-gradient(circle at 39% 44%, #d09254 0 4%, transparent 5%),
     linear-gradient(145deg, transparent 0 34%, #120905 35% 52%, transparent 53%),
     linear-gradient(215deg, transparent 0 34%, #1b0f09 35% 52%, transparent 53%),
     linear-gradient(#21130d, #080504);
@@ -24,17 +22,17 @@
 }
 
 .login-cabin::before {
-  animation: loginSnow 7s linear infinite;
-  background:
-    radial-gradient(circle, #fff 0 2px, transparent 3px) 10% 0 / 80px 80px,
-    radial-gradient(circle, #fff 0 1px, transparent 2px) 45% 0 / 110px 110px;
+  background: linear-gradient(180deg, transparent, #ffffff20);
+  bottom: -14px;
   content: "";
-  inset: -70vh -40vw 0 0;
-  position: fixed;
+  height: 48px;
+  left: -12vw;
+  position: absolute;
+  width: 120vw;
 }
 
 .login-cabin::after {
-  background: radial-gradient(circle at 34% 45%, #d0925488, transparent 22%);
+  background: linear-gradient(180deg, transparent, #0007);
   content: "";
   inset: 0;
   position: absolute;
@@ -47,19 +45,26 @@
 }
 
 .login-copy {
-  margin-left: auto;
+  margin-left: 0;
   max-width: 620px;
+  transform: translateX(18px);
 }
 
 .login-copy h1 {
-  font-size: clamp(2.8rem, 7vw, 6.4rem);
-  line-height: 0.92;
-  margin: 14px 0;
+  animation: titleFlicker 3.2s steps(2) infinite;
+  color: #e8edf2;
+  font-size: clamp(5rem, 13vw, 10rem);
+  line-height: 0.82;
+  margin: 0 0 18px;
+  text-shadow: 0 0 18px #ffffff33, 3px 0 #7a101b88, -3px 0 #1d3d5c88;
 }
 
 .login-copy p:last-child {
   color: #8390a3;
-  font-size: 1.05rem;
+  font-size: 0.95rem;
+  letter-spacing: 0.04em;
+  max-width: 330px;
+  text-transform: uppercase;
 }
 
 .auth-card {
@@ -81,12 +86,22 @@
   z-index: 1;
 }
 
+.login-snow {
+  animation: loginSnow linear infinite;
+  background: #f1f6fb;
+  border-radius: 48% 62% 43% 58%;
+  clip-path: polygon(50% 0, 64% 34%, 100% 45%, 66% 61%, 56% 100%, 40% 66%, 0 55%, 36% 39%);
+  position: fixed;
+  top: -10px;
+  z-index: 1;
+}
+
 @media (max-width: 760px) {
   .login-shell { grid-template-columns: 1fr; }
-  .login-copy { margin: 0; }
+  .login-copy { margin: 0; transform: none; }
   .login-cabin { left: -20vw; width: 120vw; }
 }
 
 @keyframes loginSnow {
-  to { transform: translate(-40px, 120px); }
+  to { transform: translate(var(--drift), 110vh) rotate(var(--spin)); }
 }

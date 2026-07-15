@@ -3,12 +3,16 @@ import type { Session } from '@supabase/supabase-js';
 import { Auth } from './components/Auth';
 import { GameScreen } from './components/GameScreen';
 import { clearAuthCallbackUrl, readAuthErrorFromUrl } from './lib/auth';
+import { snowStyle } from './lib/snow';
 import { supabase } from './lib/supabase';
 
 function App() {
   const [session, setSession] = useState<Session | null>(null);
   const [authLoading, setAuthLoading] = useState(true);
   const [authError] = useState(readAuthErrorFromUrl);
+  const loginSnow = Array.from({ length: 56 }, (_, index) => (
+    <span className="login-snow" key={index} style={snowStyle(index)} />
+  ));
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => {
@@ -33,6 +37,7 @@ function App() {
     return (
       <main className="login-shell">
         <div className="login-cabin" aria-hidden="true" />
+        {loginSnow}
         <p className="loading-text">Checking the locks...</p>
       </main>
     );
@@ -42,9 +47,9 @@ function App() {
     return (
       <main className="login-shell">
         <div className="login-cabin" aria-hidden="true" />
+        {loginSnow}
         <section className="login-copy">
-          <p className="label">THE LAST CABIN</p>
-          <h1>Only registered names are allowed past the desk.</h1>
+          <h1>WHITEOUT</h1>
           <p>Log in to begin the night inspection.</p>
         </section>
         <Auth initialMessage={authError} />

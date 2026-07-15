@@ -1,3 +1,5 @@
+import { snowStyle } from '../lib/snow';
+
 export function CabinScene() {
   return (
     <section className="cabin" aria-label="Cabin front door">
@@ -7,11 +9,7 @@ export function CabinScene() {
           <span
             className="snowflake"
             key={index}
-            style={{
-              left: `${(index * 29) % 100}%`,
-              animationDelay: `${(index % 12) * 0.25}s`,
-              animationDuration: `${4 + (index % 5)}s`,
-            }}
+            style={snowStyle(index)}
           />
         ))}
       </div>

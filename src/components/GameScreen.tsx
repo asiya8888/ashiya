@@ -1,8 +1,10 @@
 import { CabinScene } from './CabinScene';
+import { DiaryFragment } from './DiaryFragment';
 import { EndScreen } from './EndScreen';
 import { GameHud } from './GameHud';
 import { VisitorCard } from './VisitorCard';
 import { useCabinGame } from '../lib/useCabinGame';
+import { snowStyle } from '../lib/snow';
 
 type GameScreenProps = {
   onSignOut: () => void;
@@ -21,28 +23,24 @@ export function GameScreen({ onSignOut }: GameScreenProps) {
     return (
       <main className="menu-shell">
         <div className="menu-cabin" aria-hidden="true">
-          <span className="menu-window menu-window--left" />
-          <span className="menu-window menu-window--right" />
           {Array.from({ length: 48 }, (_, index) => (
             <span
               className="menu-snow"
               key={index}
-              style={{
-                left: `${(index * 23) % 100}%`,
-                animationDelay: `${(index % 16) * 0.18}s`,
-                animationDuration: `${5 + (index % 6)}s`,
-              }}
+              style={snowStyle(index)}
             />
           ))}
         </div>
         <EndScreen
           menu
-          label="THE LAST CABIN"
-          title="THE LAST CABIN"
-          text="A lonely inspection desk. Ten knocks before sunrise. Decide who is still human."
+          label="WHITEOUT"
+          title="WHITEOUT"
+          text="Lost travelers knock at your cabin. Some are only pretending to be human."
           actionLabel="Start Game"
           onRestart={game.startNight}
-        />
+        >
+          <DiaryFragment />
+        </EndScreen>
       </main>
     );
   }
@@ -74,7 +72,7 @@ export function GameScreen({ onSignOut }: GameScreenProps) {
           />
         </div>
       </div>
-      {game.status === 'jumpscare' && <div className="jumpscare" aria-label="Skinwalker jumpscare" />}
+      {game.status === 'jumpscare' && <div className="jumpscare" aria-label="Mimic jumpscare" />}
       {game.status === 'lost' && (
         <EndScreen danger title="Game Over" text="The cabin goes quiet before sunrise." onRestart={game.restart} />
       )}

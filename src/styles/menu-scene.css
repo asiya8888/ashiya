@@ -25,34 +25,16 @@
   width: 120vw;
 }
 
-.menu-window {
-  animation: windowGlow 2.6s ease-in-out infinite;
-  background: radial-gradient(circle, #d09353, #6b331d 72%);
-  box-shadow: 0 0 35px #b46634aa;
-  height: 72px;
-  position: absolute;
-  top: 48%;
-  width: 86px;
-}
-
-.menu-window--left { left: 24%; }
-.menu-window--right { right: 24%; }
-
 .menu-snow {
   animation: menuSnow linear infinite;
   background: #f1f6fb;
-  border-radius: 50%;
-  height: 4px;
+  border-radius: 48% 62% 43% 58%;
+  clip-path: polygon(50% 0, 64% 34%, 100% 45%, 66% 61%, 56% 100%, 40% 66%, 0 55%, 36% 39%);
   position: fixed;
   top: -10px;
-  width: 4px;
   z-index: 1;
 }
 
 @keyframes menuSnow {
-  to { transform: translate(-34px, 110vh); }
-}
-
-@keyframes windowGlow {
-  50% { filter: brightness(1.25); opacity: 0.82; }
+  to { transform: translate(var(--drift), 110vh) rotate(var(--spin)); }
 }
