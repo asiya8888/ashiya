@@ -74,8 +74,7 @@ export function GameScreen({ onSignOut }: GameScreenProps) {
       </div>
       {game.status === 'jumpscare' && (
         <div className="jumpscare" aria-label="Mimic jumpscare">
-          <span>You Lose</span>
-          <strong>Game Over</strong>
+          <span>Game Over</span>
         </div>
       )}
       {game.status === 'lost' && (
