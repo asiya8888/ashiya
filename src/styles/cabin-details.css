@@ -73,7 +73,7 @@
 }
 
 .lock-plate {
-  background: linear-gradient(90deg, #05070a, #6a8fb8, #080c12);
+  background: linear-gradient(90deg, #05070a, #4d4f52, #080c12);
   border: 1px solid #020306;
   box-shadow: 0 0 16px #0008;
   height: 38px;
@@ -84,7 +84,7 @@
 }
 
 .hinge {
-  background: linear-gradient(90deg, #05070a, #344257, #080c12);
+  background: linear-gradient(90deg, #05070a, #2b2522, #080c12);
   border-radius: 2px;
   box-shadow: inset 0 0 8px #000;
   height: 48px;
