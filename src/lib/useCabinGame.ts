@@ -1,5 +1,6 @@
 import { useCallback, useMemo, useRef, useState } from 'react';
-import { encounterDelay, FINAL_NIGHT, gameSubtitle, STARTING_LIVES, TOTAL_VISITORS } from './gameConfig';
+import { unlockDiaryPage } from './diaryPages';
+import { encounterDelay, FINAL_NIGHT, gameSubtitle, STARTING_LIVES, STARTING_SUPPLIES, TOTAL_VISITORS } from './gameConfig';
 import { playEventSound } from './eventSounds';
 import { resolveChoice } from './outcomes';
 import { randomQuestion } from './questions';
@@ -7,12 +8,15 @@ import { takeRandom } from './random';
 import { playDoorCreak, playJumpscare, playKnock, setMusicIntensity, startAmbience, stopAmbience } from './sounds';
 import type { GameStatus } from './gameTypes';
 import { makeVisitor, type Visitor } from './visitors';
+import type { VisitorMemory } from './visitorMemory';
 
 export function useCabinGame() {
   const firstVisitor = useRef(makeVisitor(1, 1));
   const [night, setNight] = useState(1);
   const [visitorIndex, setVisitorIndex] = useState(1);
   const [lives, setLives] = useState(STARTING_LIVES);
+  const [supplies, setSupplies] = useState(STARTING_SUPPLIES);
+  const [diaryCount, setDiaryCount] = useState(0);
   const [score, setScore] = useState(0);
   const [status, setStatus] = useState<GameStatus>('ready');
   const [shaking, setShaking] = useState(false);
@@ -23,21 +27,16 @@ export function useCabinGame() {
   const [remainingInspections, setRemainingInspections] = useState<string[]>(() => firstVisitor.current.inspections);
   const [askedThisVisitor, setAskedThisVisitor] = useState(false);
   const [lookedThisVisitor, setLookedThisVisitor] = useState(false);
+  const memories = useRef<VisitorMemory[]>([]);
   const nextKnockTimer = useRef<number>(), nextVisitorTimer = useRef<number>(), jumpscareTimer = useRef<number>();
 
   const subtitle = useMemo(() => gameSubtitle(status), [status]);
-  const clearTimers = () => {
-    window.clearTimeout(nextKnockTimer.current);
-    window.clearTimeout(nextVisitorTimer.current);
-    window.clearTimeout(jumpscareTimer.current);
-  };
+  const clearTimers = () => [nextKnockTimer, nextVisitorTimer, jumpscareTimer].forEach((timer) => window.clearTimeout(timer.current));
 
   const resetEncounter = (next: Visitor) => {
     setVisitor(next);
-    setEntries([]);
-    setOutcome('');
-    setRemainingAnswers(next.answers);
-    setRemainingInspections(next.inspections);
+    setEntries([]); setOutcome('');
+    setRemainingAnswers(next.answers); setRemainingInspections(next.inspections);
     setAskedThisVisitor(false); setLookedThisVisitor(false);
     setMusicIntensity(next.kind === 'skinwalker');
   };
@@ -58,14 +57,15 @@ export function useCabinGame() {
     }
 
     const nextIndex = visitorIndex + 1;
-    const next = makeVisitor(nextIndex, night);
+    const next = makeVisitor(nextIndex, night, memories.current);
     setVisitorIndex(nextIndex);
     resetEncounter(next);
     nextKnockTimer.current = window.setTimeout(() => triggerArrival(next.eventSound), 140);
   }, [night, triggerArrival, visitorIndex]);
   const restart = () => {
     clearTimers();
-    setNight(1); setVisitorIndex(1); setLives(STARTING_LIVES);
+    setNight(1); setVisitorIndex(1); setLives(STARTING_LIVES); setSupplies(STARTING_SUPPLIES);
+    setDiaryCount(0); memories.current = [];
     setScore(0); setStatus('ready');
     stopAmbience();
     resetEncounter(makeVisitor(1, 1));
@@ -73,7 +73,10 @@ export function useCabinGame() {
 
   const makeChoice = (choice: 'allow' | 'refuse') => {
     const result = resolveChoice(visitor, choice);
-    setOutcome(result.message);
+    const diaryPage = result.diary ? unlockDiaryPage(diaryCount) : '';
+    if (result.diary) setDiaryCount((count) => count + 1);
+    if (visitor.kind !== 'empty') memories.current = [{ choice, kind: visitor.kind, name: visitor.name }, ...memories.current].slice(0, 4);
+    setOutcome(diaryPage ? `${result.message} ${diaryPage}` : result.message);
     if (result.jumpscare) {
       setStatus('jumpscare');
       playJumpscare();
@@ -91,14 +94,13 @@ export function useCabinGame() {
         return;
       }
     }
+    if (result.suppliesLost > 0) setSupplies((current) => Math.max(0, current - result.suppliesLost));
     setStatus('waiting');
     nextVisitorTimer.current = window.setTimeout(nextVisitor, encounterDelay());
   };
 
   const lookThroughPeephole = () => {
-    playDoorCreak();
-    setStatus('playing');
-    setMusicIntensity(visitor.kind === 'skinwalker');
+    playDoorCreak(); setStatus('playing'); setMusicIntensity(visitor.kind === 'skinwalker');
   };
 
   const askQuestion = () => {
@@ -122,26 +124,20 @@ export function useCabinGame() {
     });
   };
   const startNight = () => {
-    setStatus('waiting');
-    startAmbience();
-    setMusicIntensity(false);
+    setStatus('waiting'); startAmbience(); setMusicIntensity(false);
     nextKnockTimer.current = window.setTimeout(() => triggerArrival(visitor.eventSound), encounterDelay());
   };
   const nextNight = () => {
     const nextNightNumber = night + 1;
-    const firstVisitor = makeVisitor(1, nextNightNumber);
-    setNight(nextNightNumber); setVisitorIndex(1);
-    resetEncounter(firstVisitor);
-    setStatus('waiting');
-    startAmbience();
-    setMusicIntensity(false);
+    const firstVisitor = makeVisitor(1, nextNightNumber, memories.current);
+    setNight(nextNightNumber); setVisitorIndex(1); resetEncounter(firstVisitor);
+    setStatus('waiting'); startAmbience(); setMusicIntensity(false);
     nextKnockTimer.current = window.setTimeout(() => triggerArrival(firstVisitor.eventSound), encounterDelay());
   };
 
   return {
-    entries, lives, night, outcome, score, shaking, status, subtitle,
+    diaryCount, entries, lives, night, outcome, score, shaking, status, subtitle, supplies, visitor, visitorIndex,
     totalVisitors: TOTAL_VISITORS,
-    visitor, visitorIndex,
     finishedAllNights: status === 'won' && night >= FINAL_NIGHT,
     canAsk: remainingAnswers.length > 0 && !askedThisVisitor,
     canLook: remainingInspections.length > 0 && !lookedThisVisitor,

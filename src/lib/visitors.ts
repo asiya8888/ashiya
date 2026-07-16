@@ -1,4 +1,5 @@
 import { makeDialogueProfile } from './dialogueProfiles';
+import { memoryLine, type VisitorMemory } from './visitorMemory';
 
 export type VisitorKind = 'human' | 'skinwalker' | 'empty';
 export type MoralOutcome = 'peaceful' | 'steal' | 'injure';
@@ -45,16 +46,24 @@ const emptyEvents = [
 ];
 
 const specialEvents: EventSound[] = ['scratch', 'footsteps', 'roof', 'wind', 'flicker', 'cry', 'inside'];
+const uncertainClues = [
+  'Their hood hides most of their face from the peephole.',
+  "It's difficult to make out their expression in the darkness.",
+  'Their gloves cover most of their hands.',
+  "You cannot tell whether they're shivering or just shifting their weight.",
+  'Snow keeps blowing across the glass whenever you try to focus.',
+];
 
 const makeInspections = (kind: VisitorKind, subtle: boolean) => {
+  const fog = Math.random() > 0.35 ? [pick(uncertainClues)] : [];
   if (kind === 'human') {
-    return [
+    return fog.concat([
       'Their shoulders shake from the cold.',
       'Snow is melting on their sleeves.',
       Math.random() > 0.22 ? 'You can see their breath cloud the air.' : "Their breath is faint enough that you question it.",
       'Their voice trembles like they are trying not to cry.',
       Math.random() > 0.5 ? 'Their hands look stiff and red from the cold.' : 'Their stare lingers because fear has made them slow to answer.',
-    ];
+    ]);
   }
   const hard = [
     'Something about their eyes unsettles you.',
@@ -66,7 +75,7 @@ const makeInspections = (kind: VisitorKind, subtle: boolean) => {
     'Their face looks almost familiar, but not quite balanced.',
     'A shadow crosses their skin even when the firelight does not move.',
   ];
-  return subtle ? hard : hard.concat(obvious);
+  return fog.concat(subtle ? hard : hard.concat(Math.random() > 0.5 ? obvious : []));
 };
 
 const makeFace = (kind: VisitorKind, night: number): FaceFeature => {
@@ -90,13 +99,14 @@ const makeFace = (kind: VisitorKind, night: number): FaceFeature => {
   };
 };
 
-export const makeVisitor = (id: number, night: number): Visitor => {
+export const makeVisitor = (id: number, night: number, memories: VisitorMemory[] = []): Visitor => {
   const empty = Math.random() > 0.92;
+  const memory = !empty && memories.length > 0 && Math.random() > 0.72 ? pick(memories) : undefined;
   const kind: VisitorKind = empty ? 'empty' : Math.random() < 0.38 + night * 0.06 ? 'skinwalker' : 'human';
   const eventText = empty ? pick(emptyEvents) : undefined;
   const eventSound = Math.random() > 0.68 ? pick(specialEvents) : undefined;
   const groupSize = Math.random() > 0.78 ? Math.floor(Math.random() * 3) + 2 : 1;
-  const name = groupSize > 1 ? pick(groupNames) : pick(kind === 'skinwalker' ? walkerNames : humanNames);
+  const name = memory?.name ?? (groupSize > 1 ? pick(groupNames) : pick(kind === 'skinwalker' ? walkerNames : humanNames));
   const outcome: MoralOutcome = kind === 'human' && Math.random() > 0.78 ? pick(['steal', 'injure']) : 'peaceful';
 
   if (kind === 'empty') {
@@ -115,6 +125,7 @@ export const makeVisitor = (id: number, night: number): Visitor => {
   }
 
   const profile = makeDialogueProfile(kind, night);
+  const remembered = memoryLine(memory);
 
   return {
     id,
@@ -124,7 +135,7 @@ export const makeVisitor = (id: number, night: number): Visitor => {
     eventText,
     eventSound,
     outcome,
-    dialogue: profile.dialogue,
+    dialogue: [remembered ? `${remembered} ${profile.dialogue[0]}` : profile.dialogue[0]],
     answers: profile.answers,
     inspections: makeInspections(kind, night > 2),
     face: makeFace(kind, night),

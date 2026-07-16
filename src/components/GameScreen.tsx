@@ -51,8 +51,10 @@ export function GameScreen({ onSignOut }: GameScreenProps) {
     <main className={`game-shell game-status-${game.status}`}>
       <div className={`play-area ${game.shaking ? 'is-shaking' : ''}`}>
         <GameHud
+          diaryCount={game.diaryCount}
           lives={game.lives}
           score={game.score}
+          supplies={game.supplies}
           night={game.night}
           visitorNumber={game.visitorIndex}
           totalVisitors={game.totalVisitors}
