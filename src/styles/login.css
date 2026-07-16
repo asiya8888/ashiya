@@ -40,10 +40,10 @@
 
 .login-cabin::after {
   background:
-    linear-gradient(180deg, transparent 0 70%, #dce9f129 71%, #eef6ff45 100%),
+    linear-gradient(180deg, transparent 0 68%, #0007 100%),
     repeating-linear-gradient(0deg, #ffffff08 0 1px, transparent 1px 4px);
   content: "";
-  inset: 0 -30vw -18px;
+  inset: 0;
   position: absolute;
 }
 

@@ -11,6 +11,7 @@ function App() {
   const [authLoading, setAuthLoading] = useState(true);
   const [authError] = useState(readAuthErrorFromUrl);
   const [authMode, setAuthMode] = useState<AuthMode>('signin');
+  const [showAuth, setShowAuth] = useState(Boolean(authError));
   const loginSnow = Array.from({ length: 56 }, (_, index) => (
     <span className="login-snow" key={index} style={snowStyle(index)} />
   ));
@@ -34,6 +35,11 @@ function App() {
     void supabase.auth.signOut();
   };
 
+  const openAuth = (mode: AuthMode) => {
+    setAuthMode(mode);
+    setShowAuth(true);
+  };
+
   if (authLoading) {
     return (
       <main className="login-shell">
@@ -55,16 +61,18 @@ function App() {
             <p>Mountain roads vanish. Some knocks should stay outside.</p>
           </div>
           <nav className="title-menu" aria-label="Main menu">
-            <button onClick={() => setAuthMode('signin')}>New Game</button>
-            <button onClick={() => setAuthMode('signin')}>Log In</button>
-            <button onClick={() => setAuthMode('signup')}>Don't have an account? Sign Up</button>
+            <button onClick={() => openAuth('signin')}>New Game</button>
+            <button onClick={() => openAuth('signin')}>Log In</button>
+            <button onClick={() => openAuth('signup')}>Don't have an account? Sign Up</button>
           </nav>
         </section>
-        <Auth
-          initialMessage={authError}
-          initialMode={authMode}
-          onModeChange={setAuthMode}
-        />
+        {showAuth && (
+          <Auth
+            initialMessage={authError}
+            initialMode={authMode}
+            onModeChange={setAuthMode}
+          />
+        )}
       </main>
     );
   }
