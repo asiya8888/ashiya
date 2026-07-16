@@ -1,5 +1,6 @@
 import { CabinScene } from './CabinScene';
 import { DiaryFragment } from './DiaryFragment';
+import { DoorPrompt } from './DoorPrompt';
 import { EndScreen } from './EndScreen';
 import { GameHud } from './GameHud';
 import { QuietMoment } from './QuietMoment';
@@ -47,7 +48,7 @@ export function GameScreen({ onSignOut }: GameScreenProps) {
   }
 
   return (
-    <main className="game-shell">
+    <main className={`game-shell game-status-${game.status}`}>
       <div className={`play-area ${game.shaking ? 'is-shaking' : ''}`}>
         <GameHud
           lives={game.lives}
@@ -63,6 +64,11 @@ export function GameScreen({ onSignOut }: GameScreenProps) {
           <CabinScene />
           {game.status === 'waiting' ? (
             <QuietMoment outcome={game.outcome} />
+          ) : game.status === 'knocking' ? (
+            <DoorPrompt
+              onLook={game.lookThroughPeephole}
+              onIgnore={() => game.makeChoice('refuse')}
+            />
           ) : (
             <VisitorCard
               disabled={choiceLocked}

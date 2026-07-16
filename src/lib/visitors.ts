@@ -2,6 +2,7 @@ import { makeDialogueProfile } from './dialogueProfiles';
 
 export type VisitorKind = 'human' | 'skinwalker' | 'empty';
 export type MoralOutcome = 'peaceful' | 'steal' | 'injure';
+export type EventSound = 'scratch' | 'footsteps' | 'roof' | 'wind' | 'flicker' | 'cry' | 'inside';
 
 export type FaceFeature = {
   eyes: 'normal' | 'wide' | 'black' | 'three';
@@ -29,6 +30,7 @@ export type Visitor = {
   face?: FaceFeature;
   groupSize: number;
   eventText?: string;
+  eventSound?: EventSound;
   outcome: MoralOutcome;
 };
 
@@ -42,15 +44,7 @@ const emptyEvents = [
   'Only a line of footprints waits on the porch.',
 ];
 
-const specialEvents = [
-  'Scratching crawls slowly down the other side of the door.',
-  'Someone is crying outside, too quietly to sound close.',
-  'Heavy footsteps circle the cabin and stop at the window.',
-  'Something drags itself across the roof.',
-  'The lights flicker once. Something inside the room shifts.',
-  'A strong wind hits the cabin hard enough to rattle the latch.',
-  'A whisper comes from behind you, but the visitor keeps staring.',
-];
+const specialEvents: EventSound[] = ['scratch', 'footsteps', 'roof', 'wind', 'flicker', 'cry', 'inside'];
 
 const makeInspections = (kind: VisitorKind, subtle: boolean) => {
   if (kind === 'human') {
@@ -62,8 +56,16 @@ const makeInspections = (kind: VisitorKind, subtle: boolean) => {
       'Their hands look stiff and red from the cold.',
     ];
   }
-  const hard = ['They blink a little too late.', 'Their smile does not reach their eyes.', 'No breath fogs the glass.'];
-  const obvious = ['Their fingers look too long.', 'Their face seems slightly uneven.', 'A shadow sits under their skin.'];
+  const hard = [
+    'Something about their eyes unsettles you.',
+    'Their smile seems to linger for a moment too long.',
+    "You can't quite tell whether their breath reaches the glass.",
+  ];
+  const obvious = [
+    'Their fingers rest against the frame at an uncomfortable angle.',
+    'Their face looks almost familiar, but not quite balanced.',
+    'A shadow crosses their skin even when the firelight does not move.',
+  ];
   return subtle ? hard : hard.concat(obvious);
 };
 
@@ -89,13 +91,25 @@ const makeFace = (kind: VisitorKind, night: number): FaceFeature => {
 export const makeVisitor = (id: number, night: number): Visitor => {
   const empty = Math.random() > 0.92;
   const kind: VisitorKind = empty ? 'empty' : Math.random() < 0.38 + night * 0.06 ? 'skinwalker' : 'human';
-  const eventText = empty ? pick(emptyEvents) : Math.random() > 0.72 ? pick(specialEvents) : undefined;
+  const eventText = empty ? pick(emptyEvents) : undefined;
+  const eventSound = Math.random() > 0.68 ? pick(specialEvents) : undefined;
   const groupSize = Math.random() > 0.78 ? Math.floor(Math.random() * 3) + 2 : 1;
   const name = groupSize > 1 ? pick(groupNames) : pick(kind === 'skinwalker' ? walkerNames : humanNames);
   const outcome: MoralOutcome = kind === 'human' && Math.random() > 0.78 ? pick(['steal', 'injure']) : 'peaceful';
 
   if (kind === 'empty') {
-    return { id, kind, name: 'The Door', dialogue: ['The porch is empty.'], answers: [], inspections: [], groupSize, eventText, outcome: 'peaceful' };
+    return {
+      id,
+      kind,
+      name: 'The Door',
+      dialogue: ['The porch is empty.'],
+      answers: [],
+      inspections: [],
+      groupSize,
+      eventText,
+      eventSound,
+      outcome: 'peaceful',
+    };
   }
 
   const profile = makeDialogueProfile(kind, night);
@@ -106,6 +120,7 @@ export const makeVisitor = (id: number, night: number): Visitor => {
     name,
     groupSize,
     eventText,
+    eventSound,
     outcome,
     dialogue: profile.dialogue,
     answers: profile.answers,

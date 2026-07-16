@@ -1,15 +1,12 @@
 import { useCallback, useMemo, useRef, useState } from 'react';
-import { playJumpscare, playKnock, setMusicIntensity, startAmbience, stopAmbience } from './sounds';
+import { encounterDelay, FINAL_NIGHT, gameSubtitle, STARTING_LIVES, TOTAL_VISITORS } from './gameConfig';
+import { playEventSound } from './eventSounds';
 import { resolveChoice } from './outcomes';
 import { randomQuestion } from './questions';
 import { takeRandom } from './random';
+import { playDoorCreak, playJumpscare, playKnock, setMusicIntensity, startAmbience, stopAmbience } from './sounds';
+import type { GameStatus } from './gameTypes';
 import { makeVisitor, type Visitor } from './visitors';
-
-const TOTAL_VISITORS = 10;
-const STARTING_LIVES = 3;
-const FINAL_NIGHT = 5;
-type GameStatus = 'ready' | 'playing' | 'waiting' | 'won' | 'lost' | 'jumpscare';
-const encounterDelay = () => 2000 + Math.random() * 2000;
 
 export function useCabinGame() {
   const firstVisitor = useRef(makeVisitor(1, 1));
@@ -28,12 +25,7 @@ export function useCabinGame() {
   const [lookedThisVisitor, setLookedThisVisitor] = useState(false);
   const nextKnockTimer = useRef<number>(), nextVisitorTimer = useRef<number>(), jumpscareTimer = useRef<number>();
 
-  const subtitle = useMemo(() => {
-    if (status === 'won') return 'The sun has cleared the ridge.';
-    if (status === 'waiting') return 'The room settles. The fire is the only thing answering.';
-    if (status === 'jumpscare') return 'Something smiles from the dark hallway.';
-    return 'Listen closely. Look twice. Dawn is far away.';
-  }, [status]);
+  const subtitle = useMemo(() => gameSubtitle(status), [status]);
   const clearTimers = () => {
     window.clearTimeout(nextKnockTimer.current);
     window.clearTimeout(nextVisitorTimer.current);
@@ -49,9 +41,11 @@ export function useCabinGame() {
     setAskedThisVisitor(false); setLookedThisVisitor(false);
     setMusicIntensity(next.kind === 'skinwalker');
   };
-  const triggerArrival = useCallback(() => {
+  const triggerArrival = useCallback((eventSound?: Visitor['eventSound']) => {
+    setStatus('knocking');
     setShaking(true);
     playKnock();
+    playEventSound(eventSound);
     window.setTimeout(() => setShaking(false), 420);
   }, []);
 
@@ -64,10 +58,10 @@ export function useCabinGame() {
     }
 
     const nextIndex = visitorIndex + 1;
+    const next = makeVisitor(nextIndex, night);
     setVisitorIndex(nextIndex);
-    resetEncounter(makeVisitor(nextIndex, night));
-    setStatus('playing');
-    nextKnockTimer.current = window.setTimeout(triggerArrival, 140);
+    resetEncounter(next);
+    nextKnockTimer.current = window.setTimeout(() => triggerArrival(next.eventSound), 140);
   }, [night, triggerArrival, visitorIndex]);
   const restart = () => {
     clearTimers();
@@ -101,6 +95,12 @@ export function useCabinGame() {
     nextVisitorTimer.current = window.setTimeout(nextVisitor, encounterDelay());
   };
 
+  const lookThroughPeephole = () => {
+    playDoorCreak();
+    setStatus('playing');
+    setMusicIntensity(visitor.kind === 'skinwalker');
+  };
+
   const askQuestion = () => {
     if (askedThisVisitor) return;
     setRemainingAnswers((currentAnswers) => {
@@ -122,19 +122,20 @@ export function useCabinGame() {
     });
   };
   const startNight = () => {
-    setStatus('playing');
+    setStatus('waiting');
     startAmbience();
-    setMusicIntensity(visitor.kind === 'skinwalker');
-    nextKnockTimer.current = window.setTimeout(triggerArrival, 450);
+    setMusicIntensity(false);
+    nextKnockTimer.current = window.setTimeout(() => triggerArrival(visitor.eventSound), encounterDelay());
   };
   const nextNight = () => {
     const nextNightNumber = night + 1;
     const firstVisitor = makeVisitor(1, nextNightNumber);
     setNight(nextNightNumber); setVisitorIndex(1);
     resetEncounter(firstVisitor);
-    setStatus('playing');
+    setStatus('waiting');
     startAmbience();
-    nextKnockTimer.current = window.setTimeout(triggerArrival, 450);
+    setMusicIntensity(false);
+    nextKnockTimer.current = window.setTimeout(() => triggerArrival(firstVisitor.eventSound), encounterDelay());
   };
 
   return {
@@ -144,6 +145,6 @@ export function useCabinGame() {
     finishedAllNights: status === 'won' && night >= FINAL_NIGHT,
     canAsk: remainingAnswers.length > 0 && !askedThisVisitor,
     canLook: remainingInspections.length > 0 && !lookedThisVisitor,
-    askQuestion, lookCloser, makeChoice, nextNight, restart, startNight,
+    askQuestion, lookCloser, lookThroughPeephole, makeChoice, nextNight, restart, startNight,
   };
 }

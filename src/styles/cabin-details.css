@@ -1,0 +1,132 @@
+.wall-planks {
+  background:
+    linear-gradient(90deg, #0008, transparent 14%, transparent 82%, #0009),
+    repeating-linear-gradient(90deg, #ffffff05 0 1px, transparent 1px 74px),
+    repeating-linear-gradient(0deg, #0d0907 0 3px, transparent 3px 78px);
+  inset: 0;
+  opacity: 0.72;
+  position: absolute;
+}
+
+.wall-planks::before {
+  background:
+    radial-gradient(ellipse at 32% 42%, #d0995b18, transparent 28%),
+    radial-gradient(ellipse at 76% 18%, #0008, transparent 32%);
+  content: "";
+  inset: 0;
+  position: absolute;
+}
+
+.window-frame::before {
+  background:
+    linear-gradient(90deg, transparent, #d0e5ff18, transparent),
+    repeating-linear-gradient(0deg, #ffffff12 0 1px, transparent 1px 18px);
+  content: "";
+  inset: 18px;
+  pointer-events: none;
+  position: absolute;
+  z-index: 2;
+}
+
+.window-sill {
+  background: linear-gradient(180deg, #5b3a26, #1a0f0a);
+  bottom: -16px;
+  box-shadow: 0 10px 22px #0009;
+  height: 18px;
+  left: -18px;
+  position: absolute;
+  right: -18px;
+}
+
+.window-frost {
+  background:
+    radial-gradient(ellipse at 18% 18%, #e8f6ff24, transparent 26%),
+    radial-gradient(ellipse at 82% 70%, #e8f6ff1c, transparent 24%);
+  inset: 0;
+  position: absolute;
+  z-index: 1;
+}
+
+.door-grain {
+  background:
+    repeating-linear-gradient(93deg, #ffffff07 0 2px, transparent 2px 18px),
+    linear-gradient(90deg, #0005, transparent 45%, #0007);
+  inset: 0;
+  position: absolute;
+}
+
+.peephole {
+  background: radial-gradient(circle, #0b0c10 0 38%, #a27a4d 45%, #21100a 70%);
+  border-radius: 50%;
+  box-shadow: 0 0 12px #000;
+  height: 15px;
+  left: 50%;
+  position: absolute;
+  top: 96px;
+  transform: translateX(-50%);
+  width: 15px;
+}
+
+.game-status-knocking .peephole {
+  animation: peepholePulse 1.8s ease-in-out infinite;
+  box-shadow: 0 0 18px #000, 0 0 24px #c99a6440;
+}
+
+.lock-plate {
+  background: linear-gradient(90deg, #2d1a10, #a77a4b, #26150d);
+  border: 1px solid #140906;
+  box-shadow: 0 0 16px #0008;
+  height: 38px;
+  position: absolute;
+  right: 33px;
+  top: 199px;
+  width: 18px;
+}
+
+.hinge {
+  background: linear-gradient(90deg, #130b08, #73502f, #180c07);
+  border-radius: 2px;
+  box-shadow: inset 0 0 8px #000;
+  height: 48px;
+  left: -8px;
+  position: absolute;
+  width: 14px;
+}
+
+.hinge-top { top: 96px; }
+.hinge-bottom { bottom: 118px; }
+
+.cabin-trim {
+  background: linear-gradient(180deg, #51311f, #170d09);
+  bottom: 0;
+  box-shadow: 0 -10px 26px #0007;
+  height: 34px;
+  position: absolute;
+  width: 100%;
+  z-index: 1;
+}
+
+.ash-specks {
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  position: absolute;
+  z-index: 2;
+}
+
+.ash-specks span {
+  animation: ash-drift 6s ease-in-out infinite;
+  background: #caa06a66;
+  border-radius: 50%;
+  height: 2px;
+  position: absolute;
+  width: 2px;
+}
+
+@keyframes ash-drift {
+  50% { opacity: 0.35; transform: translate(10px, -16px); }
+}
+
+@keyframes peepholePulse {
+  50% { filter: brightness(1.35); transform: translateX(-50%) scale(1.18); }
+}

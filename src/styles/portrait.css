@@ -1,8 +1,10 @@
 .portrait {
   background:
-    radial-gradient(circle at 52% 18%, #a9bed022, transparent 28%),
-    linear-gradient(180deg, #121a26, #05070b);
-  border: 1px solid #263241;
+    radial-gradient(ellipse at 50% 42%, transparent 0 32%, #020304 34% 62%, transparent 64%),
+    radial-gradient(circle at 52% 18%, #d0e1ed24, transparent 28%),
+    linear-gradient(180deg, #111a25, #040506);
+  border: 1px solid #30231b;
+  border-radius: 50%;
   height: 300px;
   overflow: hidden;
   position: relative;
@@ -20,7 +22,9 @@
 .portrait--low::after { background: linear-gradient(0deg, transparent 0 34%, #000b 78%); }
 
 .shoulders {
-  background: #2e3743;
+  background:
+    linear-gradient(90deg, #1b2028, #39424d 45%, #171b22),
+    radial-gradient(ellipse at 50% 0, #e9edf022, transparent 42%);
   border-radius: 45% 45% 0 0;
   bottom: -38px;
   height: 116px;
@@ -30,13 +34,24 @@
   width: 230px;
 }
 
-.portrait--scarf .shoulders { background: linear-gradient(90deg, #202734, #65111b 52%, #252c36); }
-.portrait--coat .shoulders { background: #3a2216; }
+.portrait--scarf .shoulders {
+  background:
+    linear-gradient(90deg, #202734, #65111b 52%, #252c36),
+    radial-gradient(ellipse at 50% 0, #f0e0c822, transparent 42%);
+}
+
+.portrait--coat .shoulders {
+  background:
+    linear-gradient(90deg, #24150f, #4a2c1b 52%, #1b100c),
+    radial-gradient(ellipse at 50% 0, #d9b48524, transparent 40%);
+}
 
 .face {
-  background: #c6ad97;
-  border-radius: 44% 44% 48% 48%;
-  box-shadow: inset -22px 12px 28px #2b171633, inset 10px -20px 26px #fff2;
+  background:
+    radial-gradient(ellipse at 36% 44%, #fff3 0 6%, transparent 18%),
+    linear-gradient(110deg, #8c6652, #c6ad97 34% 68%, #6d4b3e);
+  border-radius: 48% 48% 44% 44% / 38% 38% 52% 52%;
+  box-shadow: inset -24px 12px 30px #2b17164a, inset 10px -20px 26px #fff2;
   height: 178px;
   left: 50%;
   position: absolute;
@@ -46,9 +61,9 @@
   z-index: 1;
 }
 
-.face--pale { background: #c7b9ad; }
-.face--warm { background: #b88a69; }
-.face--frozen { background: #b8c8cd; }
+.face--pale { background: linear-gradient(110deg, #82766d, #c7b9ad 38% 68%, #6b5e57); }
+.face--warm { background: linear-gradient(110deg, #76513d, #b88a69 38% 70%, #58382d); }
+.face--frozen { background: linear-gradient(110deg, #74848a, #b8c8cd 38% 68%, #5a6870); }
 .face--older { box-shadow: inset -24px 13px 28px #2b171642, inset 0 -16px 22px #5a474455; }
 .face-shadow { background: #02020255; inset: 0 0 0 54%; position: absolute; }
 .face--tired { transform: translateX(-50%) scaleY(0.96); }
@@ -58,12 +73,13 @@
 
 .eye, .brow, .nose, .scar, .mouth, .breath { position: absolute; }
 .eye {
-  background: #151719;
-  border-radius: 50%;
-  box-shadow: 0 0 0 3px #e8d5c6;
-  height: 10px;
+  background:
+    radial-gradient(circle at 48% 50%, #050607 0 26%, #6e4a35 28% 42%, #e8d5c6 44%);
+  border-radius: 46% 54% 48% 52%;
+  box-shadow: 0 2px 5px #0008;
+  height: 12px;
   top: 70px;
-  width: 15px;
+  width: 20px;
 }
 
 .eye--0 { left: 34px; }
@@ -92,11 +108,14 @@
 .face--calm .brow { top: 56px; }
 
 .nose {
-  border-left: 8px solid transparent;
-  border-right: 8px solid transparent;
-  border-bottom: 34px solid #8d6f61;
-  left: 56px;
-  top: 84px;
+  background:
+    linear-gradient(90deg, transparent 0 38%, #5a4038aa 40% 50%, #fff2 52%, transparent 70%),
+    radial-gradient(ellipse at 55% 90%, #5a403866 0 28%, transparent 32%);
+  border-radius: 45%;
+  height: 38px;
+  left: 53px;
+  top: 82px;
+  width: 22px;
 }
 
 .scar {
@@ -109,16 +128,17 @@
 }
 
 .mouth {
-  background: #3a1715;
-  border-radius: 0 0 50% 50%;
+  background: transparent;
+  border-bottom: 3px solid #3a1715;
+  border-radius: 0 0 60% 60%;
   bottom: 34px;
-  height: 8px;
+  height: 12px;
   left: 43px;
   width: 42px;
 }
 
 .mouth--tense { height: 4px; }
-.mouth--too-wide { height: 13px; left: 24px; width: 80px; }
+.mouth--too-wide { height: 18px; left: 24px; width: 80px; }
 .face--calm .mouth { height: 5px; }
 .face--afraid .mouth { height: 13px; width: 34px; }
 .breath {

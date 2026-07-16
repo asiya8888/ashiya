@@ -1,8 +1,10 @@
 .visitor-card {
-  animation: fadeIn 0.55s ease both;
-  background: linear-gradient(180deg, #111925, #080605);
-  border: 1px solid #2d3a4c;
-  box-shadow: 0 22px 70px #000, inset 0 0 32px #7a101b18;
+  animation: peepholeReveal 0.85s ease both;
+  background:
+    radial-gradient(circle at 50% 18%, #101010 0 28%, transparent 29%),
+    linear-gradient(180deg, #17110d, #070504);
+  border: 1px solid #3b2a1f;
+  box-shadow: 0 24px 80px #000, inset 0 0 36px #b16d3214;
   display: grid;
   gap: 18px;
   padding: 18px;
@@ -13,23 +15,30 @@
   min-height: 420px;
 }
 
-.visitor-copy { display: grid; gap: 10px; }
+.visitor-copy {
+  background: #0b0806cc;
+  border: 1px solid #3c2b20;
+  display: grid;
+  gap: 10px;
+  padding: 14px;
+}
+
 .visitor-copy h2 { font-size: 2rem; }
-.quote { color: #c4ced8; line-height: 1.5; }
-.event-text { color: #b95a47; font-size: 0.92rem; line-height: 1.45; }
+.quote { color: #d1c2ae; line-height: 1.65; }
+.event-text { color: #b58a68; font-size: 0.92rem; line-height: 1.45; }
 .empty-porch {
   align-items: center;
-  background: #080c12;
-  border: 1px solid #263241;
-  color: #8390a3;
+  background: radial-gradient(circle, #182130, #050608 65%);
+  border: 1px solid #30231b;
+  color: #b6afa5;
   display: flex;
   height: 300px;
   justify-content: center;
 }
 
 .interaction-log {
-  background: #080c12;
-  border: 1px solid #263241;
+  background: #0b0806;
+  border: 1px solid #3c2b20;
   display: grid;
   gap: 6px;
   padding: 10px;
@@ -49,8 +58,8 @@
 }
 
 .choices button {
-  background: #8d101b;
-  color: #edf2f7;
+  background: #6e1414;
+  color: #f3e8d8;
   font-weight: 800;
   padding: 14px 16px;
   text-transform: uppercase;
@@ -58,12 +67,39 @@
 }
 
 .choices button:last-child {
-  background: #1b2533;
-  color: #d6dce4;
+  background: #211811;
+  color: #d9c9b6;
 }
+
+.door-prompt {
+  align-content: center;
+  animation: fadeIn 0.6s ease both;
+  background:
+    radial-gradient(circle at 50% 32%, #090909 0 7%, transparent 8%),
+    linear-gradient(180deg, #1a120d, #070504);
+  border: 1px solid #3c2b20;
+  box-shadow: 0 24px 80px #000, inset 0 0 42px #a5652e12;
+  display: grid;
+  gap: 18px;
+  min-height: 420px;
+  padding: 24px;
+}
+
+.door-prompt h2 { color: #efe1cf; font-size: 2rem; }
+
+.door-prompt p {
+  color: #b9aa99;
+  line-height: 1.65;
+}
+
+.door-choices { margin-top: 12px; }
 
 @media (max-width: 760px) {
   .choices { grid-template-columns: 1fr; }
 }
 
 @keyframes fadeIn { from { opacity: 0; transform: translateY(12px); } }
+
+@keyframes peepholeReveal {
+  from { opacity: 0; transform: scale(0.96); filter: blur(5px); }
+}

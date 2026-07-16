@@ -1,5 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Special+Elite&display=swap');
 @import './styles/cabin.css';
+@import './styles/cabin-details.css';
 @import './styles/menu-scene.css';
 @import './styles/portrait.css';
 @import './styles/portrait-details.css';

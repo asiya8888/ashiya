@@ -6,6 +6,7 @@ export type DialogueProfile = {
 };
 
 const pick = <T,>(items: T[]) => items[Math.floor(Math.random() * items.length)];
+const usedDialogues = new Set<string>();
 
 const humanStarts = [
   "I'm sorry for knocking this late",
@@ -73,23 +74,35 @@ const mimicAnswers = [
 
 const sentence = (start: string, situation: string, detail: string) => `${start}; ${situation}, and ${detail}.`;
 
+const uniqueSentence = (starts: string[], situations: string[], details: string[]) => {
+  for (let attempt = 0; attempt < 12; attempt += 1) {
+    const line = sentence(pick(starts), pick(situations), pick(details));
+    if (!usedDialogues.has(line)) {
+      usedDialogues.add(line);
+      return line;
+    }
+  }
+
+  const fallback = sentence(pick(starts), pick(situations), pick(details));
+  usedDialogues.add(fallback);
+  return fallback;
+};
+
 export function makeDialogueProfile(kind: VisitorKind, night: number): DialogueProfile {
   if (kind === 'human') {
     return {
-      dialogue: [sentence(pick(humanStarts), pick(humanSituations), pick(humanDetails))],
+      dialogue: [uniqueSentence(humanStarts, humanSituations, humanDetails)],
       answers: humanAnswers,
     };
   }
 
   const convincing = night > 2 && Math.random() > 0.35;
+  const starts = convincing ? humanStarts : mimicStarts;
+  const situations = convincing ? humanSituations : mimicSituations;
+  const details = convincing ? humanDetails : mimicDetails;
+
   return {
-    dialogue: [
-      sentence(
-        pick(convincing ? humanStarts : mimicStarts),
-        pick(convincing ? humanSituations : mimicSituations),
-        pick(convincing ? humanDetails : mimicDetails),
-      ),
-    ],
+    dialogue: [uniqueSentence(starts, situations, details)],
     answers: mimicAnswers,
   };
 }

@@ -1,7 +1,7 @@
 .cabin {
   background:
-    radial-gradient(circle at 44% 82%, #b56b3f55, transparent 35%),
-    linear-gradient(90deg, #1c120c, #31343a 42%, #130c08);
+    radial-gradient(circle at 46% 82%, #b56b3f66, transparent 34%),
+    linear-gradient(90deg, #1b100a, #40352d 44%, #140b08);
   border: 1px solid #263241;
   box-shadow: inset 0 0 38px #000, 0 24px 70px #0008;
   min-height: 620px;
@@ -11,7 +11,9 @@
 
 .cabin::before {
   animation: candle 2.4s ease-in-out infinite;
-  background: radial-gradient(circle at 50% 100%, #c57a4594, transparent 64%);
+  background:
+    radial-gradient(circle at 25% 92%, #a461347a, transparent 28%),
+    radial-gradient(circle at 50% 100%, #c57a4594, transparent 64%);
   content: "";
   inset: 38% 0 0;
   position: absolute;
@@ -25,19 +27,29 @@
   position: absolute;
 }
 
-.window {
-  background:
-    linear-gradient(#07111ecc, #142642cc),
-    radial-gradient(circle at 72% 26%, #b8c8d8 0 18px, transparent 20px);
-  border: 10px solid #0a0d12;
-  box-shadow: inset 0 0 35px #000, 0 0 18px #6a8fb822;
-  height: 224px;
+.window-frame {
+  background: linear-gradient(90deg, #21150f, #4a3425, #160d09);
+  box-shadow: 0 20px 38px #0008, inset 0 0 14px #c08a5830;
+  height: 254px;
   left: 7%;
-  overflow: hidden;
+  padding: 13px;
   position: absolute;
   top: 38px;
   width: 36%;
   z-index: 1;
+}
+
+.window {
+  background:
+    linear-gradient(#07111ed9, #142642d9),
+    radial-gradient(circle at 72% 26%, #b8c8d8 0 18px, transparent 20px),
+    linear-gradient(150deg, #d9ecff1c, transparent 38%);
+  border: 6px solid #090b10;
+  box-shadow: inset 0 0 35px #000, 0 0 18px #6a8fb822;
+  height: 100%;
+  overflow: hidden;
+  position: absolute;
+  inset: 13px;
 }
 
 .window::before,
@@ -64,16 +76,26 @@
 
 .door {
   background:
-    linear-gradient(90deg, #1b0f0a, #4a2b1b 47%, #120907),
-    repeating-linear-gradient(90deg, transparent 0 28px, #0003 29px 31px);
-  border: 8px solid #100806;
+    linear-gradient(90deg, #160b06, #57341f 46%, #1a0c07),
+    repeating-linear-gradient(90deg, #0000 0 24px, #00000024 25px 27px);
+  border: 5px solid #170b06;
+  box-shadow: inset 0 0 48px #000, inset 18px 0 28px #0006;
+  height: 100%;
+  position: relative;
+  width: 100%;
+}
+
+.door-frame {
+  background: linear-gradient(90deg, #130906, #4b2d1b, #120806);
+  border: 2px solid #0b0604;
   bottom: 0;
-  box-shadow: inset 0 0 40px #000;
-  height: 430px;
-  left: 70%;
+  box-shadow: 0 0 42px #000b, inset 0 0 12px #c3834a28;
+  height: 452px;
+  left: 72%;
+  padding: 14px 12px 0;
   position: absolute;
   transform: translateX(-50%);
-  width: min(320px, 44%);
+  width: min(314px, 39%);
   z-index: 1;
 }
 
@@ -86,7 +108,7 @@
 }
 
 .knob {
-  background: radial-gradient(circle, #a98b67, #3c2518);
+  background: radial-gradient(circle at 35% 32%, #d5b98a, #7d5735 48%, #2a160d);
   border-radius: 50%;
   height: 18px;
   position: absolute;
@@ -111,5 +133,6 @@
 
 @media (max-width: 760px) {
   .cabin { min-height: 430px; }
-  .door { height: 300px; }
+  .window-frame { height: 188px; width: 42%; }
+  .door-frame { height: 308px; left: 73%; width: min(210px, 37%); }
 }

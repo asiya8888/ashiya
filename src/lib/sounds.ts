@@ -22,7 +22,7 @@ function getAudio() {
   return audio;
 }
 
-function tone(frequency: number, start: number, length: number, volume: number, type: OscillatorType = 'sine') {
+export function tone(frequency: number, start: number, length: number, volume: number, type: OscillatorType = 'sine') {
   const context = getAudio();
   if (!context) return;
 
@@ -37,6 +37,11 @@ function tone(frequency: number, start: number, length: number, volume: number, 
   gain.connect(context.destination);
   oscillator.start(context.currentTime + start);
   oscillator.stop(context.currentTime + start + length + 0.03);
+}
+
+export function softNoise(start: number, length: number, volume: number) {
+  const context = getAudio();
+  if (context) noiseBurst(context, start, length, volume);
 }
 
 function scheduleFire() {
@@ -58,6 +63,13 @@ export function playKnock() {
     time += 0.16 + Math.random() * 0.38;
   });
 }
+
+export function playDoorCreak() {
+  tone(96, 0, 0.45, 0.08, 'sawtooth');
+  tone(132, 0.08, 0.34, 0.04, 'triangle');
+  softNoise(0.02, 0.18, 0.025);
+}
+
 
 export function playJumpscare() {
   const context = getAudio();
