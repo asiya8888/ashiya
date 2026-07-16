@@ -1,3 +1,5 @@
+import type { ConversationProfile } from './conversations';
+import { makeConversation } from './conversations';
 import { makeDialogueProfile } from './dialogueProfiles';
 import { memoryLine, type VisitorMemory } from './visitorMemory';
 
@@ -26,7 +28,7 @@ export type Visitor = {
   name: string;
   kind: VisitorKind;
   dialogue: string[];
-  answers: string[];
+  conversation?: ConversationProfile;
   inspections: string[];
   face?: FaceFeature;
   groupSize: number;
@@ -115,7 +117,6 @@ export const makeVisitor = (id: number, night: number, memories: VisitorMemory[]
       kind,
       name: 'The Door',
       dialogue: ['The porch is empty.'],
-      answers: [],
       inspections: [],
       groupSize,
       eventText,
@@ -135,8 +136,8 @@ export const makeVisitor = (id: number, night: number, memories: VisitorMemory[]
     eventText,
     eventSound,
     outcome,
+    conversation: makeConversation(kind, night),
     dialogue: [remembered ? `${remembered} ${profile.dialogue[0]}` : profile.dialogue[0]],
-    answers: profile.answers,
     inspections: makeInspections(kind, night > 2),
     face: makeFace(kind, night),
   };

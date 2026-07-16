@@ -1,10 +1,11 @@
 import { useCallback, useMemo, useRef, useState } from 'react';
+import { answerQuestion } from './conversations';
 import { unlockDiaryPage } from './diaryPages';
 import { finalEnding } from './endings';
 import { emptyEncounterDelay, encounterDelay, FINAL_NIGHT, gameSubtitle, STARTING_LIVES, STARTING_SUPPLIES, TOTAL_VISITORS } from './gameConfig';
 import { playEventSound } from './eventSounds';
 import { resolveChoice } from './outcomes';
-import { randomQuestion } from './questions';
+import { questions, questionText, type QuestionKey } from './questions';
 import { takeRandom } from './random';
 import { playDoorCreak, playJumpscare, playKnock, setMusicIntensity, startAmbience, stopAmbience } from './sounds';
 import type { GameStatus } from './gameTypes';
@@ -26,9 +27,9 @@ export function useCabinGame() {
   const [visitor, setVisitor] = useState<Visitor>(() => firstVisitor.current);
   const [entries, setEntries] = useState<string[]>([]);
   const [outcome, setOutcome] = useState('');
-  const [remainingAnswers, setRemainingAnswers] = useState<string[]>(() => firstVisitor.current.answers);
+  const [remainingQuestions, setRemainingQuestions] = useState<QuestionKey[]>(() => questions.map((question) => question.key));
+  const [askedResponses, setAskedResponses] = useState<Partial<Record<QuestionKey, string>>>({});
   const [remainingInspections, setRemainingInspections] = useState<string[]>(() => firstVisitor.current.inspections);
-  const [askedThisVisitor, setAskedThisVisitor] = useState(false);
   const [lookedThisVisitor, setLookedThisVisitor] = useState(false);
   const memories = useRef<VisitorMemory[]>([]);
   const nextKnockTimer = useRef<number>(), nextVisitorTimer = useRef<number>(), jumpscareTimer = useRef<number>();
@@ -38,15 +39,12 @@ export function useCabinGame() {
 
   const resetEncounter = (next: Visitor) => {
     setVisitor(next); setEntries([]); setOutcome('');
-    setRemainingAnswers(next.answers); setRemainingInspections(next.inspections);
-    setAskedThisVisitor(false); setLookedThisVisitor(false);
+    setRemainingQuestions(questions.map((question) => question.key)); setAskedResponses({});
+    setRemainingInspections(next.inspections); setLookedThisVisitor(false);
     setMusicIntensity(next.kind === 'skinwalker');
   };
   const triggerArrival = useCallback((eventSound?: Visitor['eventSound']) => {
-    setStatus('knocking');
-    setShaking(true);
-    playKnock();
-    playEventSound(eventSound);
+    setStatus('knocking'); setShaking(true); playKnock(); playEventSound(eventSound);
     window.setTimeout(() => setShaking(false), 420);
   }, []);
 
@@ -66,9 +64,7 @@ export function useCabinGame() {
     clearTimers();
     setNight(1); setVisitorIndex(1); setLives(STARTING_LIVES); setSupplies(STARTING_SUPPLIES);
     setDiaryCount(0); setHelped(0); setRefused(0); memories.current = [];
-    setScore(0); setStatus('ready');
-    stopAmbience();
-    resetEncounter(makeVisitor(1, 1));
+    setScore(0); setStatus('ready'); stopAmbience(); resetEncounter(makeVisitor(1, 1));
   };
 
   const makeChoice = (choice: 'allow' | 'refuse') => {
@@ -107,12 +103,15 @@ export function useCabinGame() {
   };
 
   const askQuestion = () => {
-    if (askedThisVisitor) return;
-    setRemainingAnswers((currentAnswers) => {
-      if (currentAnswers.length === 0) return currentAnswers;
-      const next = takeRandom(currentAnswers);
-      setEntries((current) => [`${randomQuestion()} ${next.item}`, ...current].slice(0, 3));
-      setAskedThisVisitor(true);
+    const profile = visitor.conversation;
+    if (!profile) return;
+    setRemainingQuestions((currentQuestions) => {
+      if (currentQuestions.length === 0) return currentQuestions;
+      const next = takeRandom(currentQuestions);
+      const repeated = Boolean(askedResponses[next.item]);
+      const answer = askedResponses[next.item] ?? answerQuestion(visitor.name, visitor.kind, profile, next.item, repeated);
+      setAskedResponses((current) => ({ ...current, [next.item]: answer }));
+      setEntries((current) => [`${questionText(next.item)} ${answer}`, ...current].slice(0, 5));
       return next.rest;
     });
   };
@@ -143,7 +142,7 @@ export function useCabinGame() {
     ending: finalEnding({ diaryCount, helped, refused, supplies }),
     totalVisitors: TOTAL_VISITORS,
     finishedAllNights: status === 'won' && night >= FINAL_NIGHT,
-    canAsk: remainingAnswers.length > 0 && !askedThisVisitor,
+    canAsk: remainingQuestions.length > 0,
     canLook: remainingInspections.length > 0 && !lookedThisVisitor,
     askQuestion, lookCloser, lookThroughPeephole, makeChoice, nextNight, restart, startNight,
   };

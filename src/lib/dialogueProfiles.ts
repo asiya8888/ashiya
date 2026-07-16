@@ -2,7 +2,6 @@ import type { VisitorKind } from './visitors';
 
 export type DialogueProfile = {
   dialogue: string[];
-  answers: string[];
 };
 
 const pick = <T,>(items: T[]) => items[Math.floor(Math.random() * items.length)];
@@ -56,22 +55,6 @@ const mimicDetails = [
   'if I were dangerous, I would not ask so gently',
 ];
 
-const humanAnswers = [
-  'My name is Mara, and I came from the north trail before the storm covered the markers.',
-  'I was with two friends earlier, but the wind took their voices before I saw where they went.',
-  'Outside is all white movement; I can barely tell where your porch ends.',
-  'I fell coming down the ridge, but I can still walk if I can warm up first.',
-  'I am trying not to panic because I know panic makes people harder to believe.',
-];
-
-const mimicAnswers = [
-  'My name is Michael, or at least that is the name that came with me to your door.',
-  'I came from the trees, from the place where the path stops making decisions.',
-  'Outside is behind me, and I would rather not turn around to describe it.',
-  'I am alone in the way a person is alone when no one is watching them.',
-  'I am answering carefully because careless answers make humans suspicious.',
-];
-
 const sentence = (start: string, situation: string, detail: string) => `${start}; ${situation}, and ${detail}.`;
 
 const uniqueSentence = (starts: string[], situations: string[], details: string[]) => {
@@ -92,7 +75,6 @@ export function makeDialogueProfile(kind: VisitorKind, night: number): DialogueP
   if (kind === 'human') {
     return {
       dialogue: [uniqueSentence(humanStarts, humanSituations, humanDetails)],
-      answers: humanAnswers,
     };
   }
 
@@ -103,6 +85,5 @@ export function makeDialogueProfile(kind: VisitorKind, night: number): DialogueP
 
   return {
     dialogue: [uniqueSentence(starts, situations, details)],
-    answers: mimicAnswers,
   };
 }
