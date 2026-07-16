@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { CabinScene } from './CabinScene';
 import { DiaryFragment } from './DiaryFragment';
 import { DoorPrompt } from './DoorPrompt';
@@ -18,6 +18,8 @@ type GameScreenProps = {
 export function GameScreen({ autoStart = false, onSignOut }: GameScreenProps) {
   const game = useCabinGame();
   const [introDone, setIntroDone] = useState(!autoStart);
+  const [windowShadow, setWindowShadow] = useState(false);
+  const lastShadowOutcome = useRef('');
   const choiceLocked = game.status !== 'playing';
 
   const signOut = () => {
@@ -37,9 +39,24 @@ export function GameScreen({ autoStart = false, onSignOut }: GameScreenProps) {
 
   useEffect(() => {
     if (game.status !== 'knocking') return undefined;
-    const timer = window.setTimeout(game.lookThroughPeephole, 1100);
+    const timer = window.setTimeout(game.lookThroughPeephole, 4000);
     return () => window.clearTimeout(timer);
   }, [game.status]);
+
+  useEffect(() => {
+    const shouldShadow =
+      game.status === 'waiting' &&
+      game.visitor.kind === 'skinwalker' &&
+      game.outcome &&
+      lastShadowOutcome.current !== game.outcome &&
+      Math.random() > 0.55;
+
+    if (!shouldShadow) return undefined;
+    lastShadowOutcome.current = game.outcome;
+    setWindowShadow(true);
+    const timer = window.setTimeout(() => setWindowShadow(false), 2600);
+    return () => window.clearTimeout(timer);
+  }, [game.status, game.outcome, game.visitor.kind]);
 
   if (autoStart && game.status === 'ready' && !introDone) {
     return <IntroSequence onComplete={finishIntro} />;
@@ -72,7 +89,7 @@ export function GameScreen({ autoStart = false, onSignOut }: GameScreenProps) {
   }
 
   return (
-    <main className={`game-shell game-status-${game.status}`}>
+    <main className={`game-shell game-status-${game.status} ${windowShadow ? 'has-window-shadow' : ''}`}>
       <div className={`play-area ${game.shaking ? 'is-shaking' : ''}`}>
         <GameHud
           diaryCount={game.diaryCount}

@@ -90,19 +90,19 @@
   border: 2px solid #020306;
   bottom: 0;
   box-shadow: 0 0 42px #000b, inset 0 0 10px #6a8fb814;
-  height: 452px;
-  left: 72%;
+  height: 505px;
+  left: 73%;
   padding: 14px 12px 0;
   position: absolute;
   transform: translateX(-50%);
-  width: min(314px, 39%);
+  width: min(360px, 43%);
   z-index: 1;
 }
 
 .door-panel {
   border: 2px solid #3a2a22;
   box-shadow: inset 0 0 18px #0007;
-  height: 140px;
+  height: 162px;
   margin: 45px auto 0;
   width: 70%;
 }
@@ -113,7 +113,7 @@
   height: 18px;
   position: absolute;
   right: 42px;
-  top: 210px;
+  top: 244px;
   width: 18px;
 }
 
@@ -134,5 +134,5 @@
 @media (max-width: 760px) {
   .cabin { min-height: 430px; }
   .window-frame { height: 188px; width: 42%; }
-  .door-frame { height: 308px; left: 73%; width: min(210px, 37%); }
+  .door-frame { height: 340px; left: 74%; width: min(240px, 40%); }
 }

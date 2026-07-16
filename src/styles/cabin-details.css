@@ -47,6 +47,19 @@
   z-index: 1;
 }
 
+.window-frost::after {
+  background:
+    radial-gradient(ellipse at 50% 18%, #020306d9 0 15%, transparent 16%),
+    radial-gradient(ellipse at 50% 62%, #020306d4 0 26%, transparent 27%);
+  content: "";
+  inset: 10% 30% 5%; opacity: 0;
+  position: absolute;
+  transform: translateX(-75%) scale(0.8);
+}
+
+.has-window-shadow .window-frost::after {
+  animation: windowFigure 2.6s ease-in-out both;
+}
 .door-grain {
   background:
     repeating-linear-gradient(93deg, #ffffff07 0 2px, transparent 2px 18px),
@@ -129,4 +142,9 @@
 
 @keyframes peepholePulse {
   50% { filter: brightness(1.35); transform: translateX(-50%) scale(1.18); }
+}
+
+@keyframes windowFigure {
+  20%, 72% { opacity: 0.72; transform: translateX(0) scale(1); }
+  to { opacity: 0; transform: translateX(55%) scale(0.92); }
 }
