@@ -34,7 +34,7 @@
   left: 7%;
   padding: 13px;
   position: absolute;
-  top: 38px;
+  top: 115px;
   width: 36%;
   z-index: 1;
 }
@@ -108,13 +108,14 @@
 }
 
 .knob {
-  background: radial-gradient(circle at 35% 32%, #d6dce4, #344257 48%, #05070a);
-  border-radius: 50%;
-  height: 18px;
+  background: linear-gradient(90deg, #0b0d10, #9ba6b4 45%, #1b2533);
+  border-radius: 999px;
+  box-shadow: 0 0 10px #000, inset 0 -2px 4px #0009;
+  height: 10px;
   position: absolute;
-  right: 42px;
-  top: 244px;
-  width: 18px;
+  right: 34px;
+  top: 254px;
+  width: 42px;
 }
 
 .floor-light {
@@ -133,6 +134,6 @@
 
 @media (max-width: 760px) {
   .cabin { min-height: 430px; }
-  .window-frame { height: 188px; width: 42%; }
+  .window-frame { height: 188px; top: 90px; width: 42%; }
   .door-frame { height: 340px; left: 74%; width: min(240px, 40%); }
 }

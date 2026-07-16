@@ -49,10 +49,11 @@
 
 .window-frost::after {
   background:
-    radial-gradient(ellipse at 50% 18%, #020306d9 0 15%, transparent 16%),
-    radial-gradient(ellipse at 50% 62%, #020306d4 0 26%, transparent 27%);
+    radial-gradient(ellipse at 50% 18%, #010203f2 0 18%, transparent 19%),
+    radial-gradient(ellipse at 50% 64%, #010203ed 0 34%, transparent 35%),
+    radial-gradient(ellipse at 50% 98%, #010203d9 0 42%, transparent 43%);
   content: "";
-  inset: 10% 30% 5%; opacity: 0;
+  inset: 5% 20% -8%; opacity: 0;
   position: absolute;
   transform: translateX(-75%) scale(0.8);
 }
@@ -89,11 +90,11 @@
   background: linear-gradient(90deg, #05070a, #4d4f52, #080c12);
   border: 1px solid #020306;
   box-shadow: 0 0 16px #0008;
-  height: 38px;
+  height: 54px;
   position: absolute;
-  right: 33px;
-  top: 199px;
-  width: 18px;
+  right: 42px;
+  top: 232px;
+  width: 16px;
 }
 
 .hinge {
@@ -145,6 +146,6 @@
 }
 
 @keyframes windowFigure {
-  20%, 72% { opacity: 0.72; transform: translateX(0) scale(1); }
-  to { opacity: 0; transform: translateX(55%) scale(0.92); }
+  20%, 72% { opacity: 0.9; transform: translateX(0) scale(1.08); }
+  to { opacity: 0; transform: translateX(55%) scale(1); }
 }
