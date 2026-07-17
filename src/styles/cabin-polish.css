@@ -1,0 +1,149 @@
+.cabin {
+  background:
+    radial-gradient(ellipse at 50% 80%, #8d101b22, transparent 36%),
+    linear-gradient(90deg, #020304 0 5%, transparent 20% 78%, #010203 96%),
+    repeating-linear-gradient(90deg, #11100d 0 7px, #17130f 8px 86px, #070605 87px 92px),
+    linear-gradient(180deg, #101820, #06070a 78%);
+  box-shadow: inset 0 0 70px #000, inset 0 -110px 90px #050302, 0 24px 70px #0009;
+}
+.wall-planks {
+  background:
+    repeating-linear-gradient(90deg, #ffffff05 0 1px, transparent 1px 78px),
+    repeating-linear-gradient(0deg, #0000 0 62px, #0008 63px 66px),
+    linear-gradient(180deg, #17120e, #08090b);
+}
+.window-frame {
+  background: linear-gradient(90deg, #050403, #20150f 48%, #050403);
+  box-shadow: 0 18px 34px #000c, inset 0 0 22px #000;
+  left: 7%;
+  top: 108px;
+  width: 31%;
+}
+.window {
+  background:
+    linear-gradient(#050b12dd, #112033dd),
+    radial-gradient(circle at 70% 24%, #d7e8f0 0 10px, transparent 12px),
+    linear-gradient(140deg, #e9f5ff18, transparent 35%);
+  border-color: #050403;
+}
+.door-frame {
+  background: linear-gradient(90deg, #050302, #25160f, #050302);
+  box-shadow: 0 0 46px #000d, inset 0 0 20px #000;
+  left: 82%;
+  width: min(300px, 32%);
+}
+.door {
+  background:
+    radial-gradient(ellipse at 52% 38%, #6a3b2022, transparent 42%),
+    repeating-linear-gradient(94deg, #ffffff07 0 2px, transparent 3px 19px),
+    linear-gradient(90deg, #090503, #342012 48%, #0a0503);
+  border-color: #080403;
+  box-shadow: inset 0 0 54px #000, inset 20px 0 30px #0007, -18px 0 34px #0008;
+}
+.door-panel {
+  background:
+    radial-gradient(ellipse at 52% 12%, #8a5a3433, transparent 36%),
+    linear-gradient(90deg, #100804, #2b190d 48%, #0c0604);
+  border-color: #5a321c66;
+}
+.knob {
+  background: radial-gradient(circle at 42% 42%, #d8b87b, #5f3a1d 48%, #0b0806 76%);
+  height: 18px;
+  right: 28px;
+  top: 254px;
+  width: 18px;
+}
+.fireplace {
+  background:
+    linear-gradient(90deg, #120a06, #2d1a10 48%, #100906),
+    repeating-linear-gradient(0deg, #0000 0 18px, #0008 19px 22px),
+    repeating-linear-gradient(90deg, #0000 0 42px, #0007 43px 46px);
+  border-color: #2f1d13;
+  bottom: 78px;
+  height: 168px;
+  left: 52%;
+  width: 142px;
+}
+.fireplace::before {
+  background: linear-gradient(180deg, #070403, #1a0d07);
+  border: 4px solid #3b2418;
+  bottom: 18px;
+  content: "";
+  height: 86px;
+  left: 24px;
+  position: absolute;
+  width: 84px;
+}
+.mantel {
+  background: linear-gradient(90deg, #0b0503, #5c371e, #0a0503);
+  box-shadow: 0 8px 18px #000c;
+  left: -18px;
+  width: 178px;
+  z-index: 2;
+}
+
+.fire,
+.ember-bed {
+  z-index: 2;
+}
+
+.living-sofa {
+  filter: drop-shadow(0 22px 24px #000b);
+  left: 10%;
+}
+
+.sofa-back,
+.sofa-seat {
+  background:
+    linear-gradient(90deg, #0f141a, #2d3845 43%, #0c1117),
+    repeating-linear-gradient(90deg, #ffffff08 0 1px, transparent 1px 34px);
+}
+
+.coat-rack {
+  left: 65%;
+}
+
+.kitchen-cabinets,
+.kitchen-counter,
+.table,
+.bed,
+.nightstand,
+.closet-door {
+  box-shadow: inset 0 0 28px #000b, 0 20px 34px #0009;
+}
+
+.kitchen-cabinets,
+.kitchen-counter {
+  background:
+    repeating-linear-gradient(90deg, #ffffff06 0 1px, transparent 1px 55px),
+    linear-gradient(90deg, #0d0704, #2f1d12 48%, #0b0604);
+}
+
+.table {
+  border-radius: 6px 6px 14px 14px;
+  transform: perspective(260px) rotateX(7deg);
+}
+
+.chair {
+  border-radius: 8px 8px 4px 4px;
+  box-shadow: inset 0 0 14px #0009;
+}
+
+.bed {
+  background:
+    linear-gradient(180deg, #36404b, #13191f),
+    repeating-linear-gradient(90deg, #ffffff08 0 1px, transparent 1px 44px);
+  border-radius: 10px 26px 8px 8px;
+}
+
+.blanket {
+  background: linear-gradient(135deg, #1f2b38, #44505c 48%, #141c25);
+}
+
+@media (max-width: 760px) {
+  .window-frame { width: 34%; }
+  .door-frame { left: 81%; width: min(210px, 34%); }
+  .fireplace { left: 51%; width: 110px; }
+  .fireplace::before { left: 18px; width: 66px; }
+  .mantel { width: 144px; }
+}
