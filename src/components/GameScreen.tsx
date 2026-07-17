@@ -1,23 +1,25 @@
 import { useEffect, useRef, useState } from 'react';
 import { CabinScene } from './CabinScene';
-import { DiaryFragment } from './DiaryFragment';
 import { DoorPrompt } from './DoorPrompt';
 import { EndScreen } from './EndScreen';
 import { GameHud } from './GameHud';
+import { GameReadyMenu } from './GameReadyMenu';
 import { IntroSequence } from './IntroSequence';
 import { QuietMoment } from './QuietMoment';
 import { VisitorCard } from './VisitorCard';
+import { markGameCompleted, type GameSettings } from '../lib/settings';
 import { useCabinGame } from '../lib/useCabinGame';
-import { snowStyle } from '../lib/snow';
 
 type GameScreenProps = {
   autoStart?: boolean;
+  onComplete: () => void;
   onSignOut: () => void;
+  settings: GameSettings;
 };
 
-export function GameScreen({ autoStart = false, onSignOut }: GameScreenProps) {
+export function GameScreen({ autoStart = false, onComplete, onSignOut, settings }: GameScreenProps) {
   const game = useCabinGame();
-  const [introDone, setIntroDone] = useState(!autoStart);
+  const [introDone, setIntroDone] = useState(!autoStart || settings.skipIntro);
   const [windowShadow, setWindowShadow] = useState(false);
   const lastShadowOutcome = useRef('');
   const choiceLocked = game.status !== 'playing';
@@ -44,6 +46,16 @@ export function GameScreen({ autoStart = false, onSignOut }: GameScreenProps) {
   }, [game.status]);
 
   useEffect(() => {
+    if (autoStart && game.status === 'ready' && introDone) game.startNight();
+  }, [autoStart, game.status, introDone]);
+
+  useEffect(() => {
+    if (!game.finishedAllNights || game.status !== 'won') return;
+    markGameCompleted();
+    onComplete();
+  }, [game.finishedAllNights, game.status, onComplete]);
+
+  useEffect(() => {
     const shouldShadow =
       game.status === 'waiting' &&
       game.visitor.kind === 'skinwalker' &&
@@ -58,39 +70,17 @@ export function GameScreen({ autoStart = false, onSignOut }: GameScreenProps) {
     return () => window.clearTimeout(timer);
   }, [game.status, game.outcome, game.visitor.kind]);
 
-  if (autoStart && game.status === 'ready' && !introDone) {
+  if (autoStart && game.status === 'ready' && !introDone && !settings.skipIntro) {
     return <IntroSequence onComplete={finishIntro} />;
   }
 
   if (game.status === 'ready') {
-    return (
-      <main className="menu-shell">
-        <div className="menu-cabin" aria-hidden="true">
-          {Array.from({ length: 48 }, (_, index) => (
-            <span
-              className="menu-snow"
-              key={index}
-              style={snowStyle(index)}
-            />
-          ))}
-        </div>
-        <EndScreen
-          menu
-          label="WHITEOUT"
-          title="WHITEOUT"
-          text="The cabin is warm. The road is gone. Someone may knock before dawn."
-          actionLabel="Begin Night"
-          onRestart={game.startNight}
-        >
-          <DiaryFragment />
-        </EndScreen>
-      </main>
-    );
+    return <GameReadyMenu onStart={game.startNight} />;
   }
 
   return (
     <main className={`game-shell game-status-${game.status} ${windowShadow ? 'has-window-shadow' : ''}`}>
-      <div className={`play-area ${game.shaking ? 'is-shaking' : ''}`}>
+      <div className={`play-area ${game.shaking && settings.screenShake ? 'is-shaking' : ''}`}>
         <GameHud
           diaryCount={game.diaryCount}
           lives={game.lives}

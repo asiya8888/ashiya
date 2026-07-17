@@ -93,6 +93,31 @@
   line-height: 1.6;
 }
 
+.settings-panel {
+  display: grid;
+  gap: 14px;
+}
+
+.settings-panel label,
+.settings-row {
+  color: #c4ced8;
+  display: grid;
+  gap: 8px;
+}
+
+.settings-panel input { accent-color: #8d101b; }
+
+.settings-panel button {
+  background: #111722;
+  border: 1px solid #344257;
+  color: #d9e1e8;
+  padding: 10px 12px;
+  text-align: left;
+}
+
+.settings-panel button:disabled { color: #6f7b8a; }
+.settings-panel .is-selected { border-color: #8d101b; color: #edf2f7; }
+
 @media (max-width: 760px) {
   .login-shell { grid-template-columns: 1fr; }
   .login-copy {

@@ -3,9 +3,11 @@ import type { Session } from '@supabase/supabase-js';
 import { Auth, type AuthMode } from './components/Auth';
 import { DiaryFragment } from './components/DiaryFragment';
 import { GameScreen } from './components/GameScreen';
+import { SettingsPanel } from './components/SettingsPanel';
 import { clearAuthCallbackUrl, readAuthErrorFromUrl } from './lib/auth';
+import { hasCompletedGame, readSettings, saveSettings, type GameSettings } from './lib/settings';
 import { snowStyle } from './lib/snow';
-import { startAmbience } from './lib/sounds';
+import { setMasterVolume, startAmbience } from './lib/sounds';
 import { supabase } from './lib/supabase';
 
 type MenuPanel = 'auth' | 'diary' | 'settings' | null;
@@ -16,6 +18,11 @@ function App() {
   const [authError] = useState(readAuthErrorFromUrl);
   const [authMode, setAuthMode] = useState<AuthMode>('signin');
   const [menuPanel, setMenuPanel] = useState<MenuPanel>(authError ? 'auth' : null);
+  const [completed, setCompleted] = useState(hasCompletedGame);
+  const [settings, setSettings] = useState<GameSettings>(() => {
+    const saved = readSettings();
+    return hasCompletedGame() ? saved : { ...saved, skipIntro: false };
+  });
   const [showGame, setShowGame] = useState(false);
   const loginSnow = Array.from({ length: 56 }, (_, index) => (
     <span className="login-snow" key={index} style={snowStyle(index)} />
@@ -37,9 +44,18 @@ function App() {
     return () => data.subscription.unsubscribe();
   }, []);
 
+  useEffect(() => {
+    saveSettings(settings);
+    setMasterVolume(settings.musicVolume / 100);
+  }, [settings]);
+
   const signOut = () => {
     setShowGame(false);
     void supabase.auth.signOut();
+  };
+
+  const updateSettings = (next: GameSettings) => {
+    setSettings(completed ? next : { ...next, skipIntro: false });
   };
 
   const beginNight = () => {
@@ -114,16 +130,20 @@ function App() {
           </aside>
         )}
         {menuPanel === 'settings' && (
-          <aside className="menu-panel">
-            <p className="label">Settings</p>
-            <p>Sound begins after your first click. Keep your volume low and the room quiet.</p>
-          </aside>
+          <SettingsPanel completed={completed} onChange={updateSettings} settings={settings} />
         )}
       </main>
     );
   }
 
-  return <GameScreen autoStart onSignOut={signOut} />;
+  return (
+    <GameScreen
+      autoStart
+      onComplete={() => setCompleted(true)}
+      onSignOut={signOut}
+      settings={settings}
+    />
+  );
 }
 
 export default App;

@@ -12,6 +12,7 @@ let windGain: GainNode | null = null;
 let droneGain: GainNode | null = null;
 let warmthGain: GainNode | null = null;
 let fireTimer: number | null = null;
+let masterVolume = 0.7;
 
 function getAudio() {
   const AudioCtor = window.AudioContext || (window as LegacyAudioWindow).webkitAudioContext;
@@ -31,7 +32,7 @@ export function tone(frequency: number, start: number, length: number, volume: n
   oscillator.frequency.value = frequency;
   oscillator.type = type;
   gain.gain.setValueAtTime(0.001, context.currentTime + start);
-  gain.gain.exponentialRampToValueAtTime(volume, context.currentTime + start + 0.02);
+  gain.gain.exponentialRampToValueAtTime(volume * masterVolume, context.currentTime + start + 0.02);
   gain.gain.exponentialRampToValueAtTime(0.001, context.currentTime + start + length);
   oscillator.connect(gain);
   gain.connect(context.destination);
@@ -41,15 +42,23 @@ export function tone(frequency: number, start: number, length: number, volume: n
 
 export function softNoise(start: number, length: number, volume: number) {
   const context = getAudio();
-  if (context) noiseBurst(context, start, length, volume);
+  if (context) noiseBurst(context, start, length, volume * masterVolume);
 }
 
 function scheduleFire() {
   fireTimer = window.setTimeout(() => {
-    const context = getAudio();
-    if (context) noiseBurst(context, 0, 0.035 + Math.random() * 0.035, 0.018);
+    softNoise(0, 0.035 + Math.random() * 0.035, 0.018);
     scheduleFire();
   }, 180 + Math.random() * 900);
+}
+
+export function setMasterVolume(volume: number) {
+  masterVolume = Math.max(0, Math.min(1, volume));
+  if (!audio) return;
+  const now = audio.currentTime;
+  windGain?.gain.setTargetAtTime(0.012 * masterVolume, now, 0.2);
+  droneGain?.gain.setTargetAtTime(0.008 * masterVolume, now, 0.2);
+  warmthGain?.gain.setTargetAtTime(0.005 * masterVolume, now, 0.2);
 }
 
 export function playKnock() {
@@ -73,7 +82,7 @@ export function playDoorCreak() {
 
 export function playJumpscare() {
   const context = getAudio();
-  if (context) noiseBurst(context, 0, 0.42, 0.95);
+  if (context) noiseBurst(context, 0, 0.42, 0.95 * masterVolume);
   [0, 0.035, 0.07, 0.11].forEach((delay) => tone(620 + delay * 2400, delay, 0.13, 1, 'sawtooth'));
   tone(42, 0, 0.7, 1, 'sawtooth');
   tone(150, 0.08, 0.42, 0.95, 'triangle');
@@ -87,7 +96,7 @@ export function startAmbience() {
   windGain = context.createGain();
   wind.type = 'sawtooth';
   wind.frequency.value = 36;
-  windGain.gain.value = 0.012;
+  windGain.gain.value = 0.012 * masterVolume;
   wind.connect(windGain);
   windGain.connect(context.destination);
   wind.start();
@@ -96,7 +105,7 @@ export function startAmbience() {
   droneGain = context.createGain();
   drone.type = 'sine';
   drone.frequency.value = 74;
-  droneGain.gain.value = 0.008;
+  droneGain.gain.value = 0.008 * masterVolume;
   drone.connect(droneGain);
   droneGain.connect(context.destination);
   drone.start();
@@ -105,7 +114,7 @@ export function startAmbience() {
   warmthGain = context.createGain();
   warmth.type = 'triangle';
   warmth.frequency.value = 146;
-  warmthGain.gain.value = 0.005;
+  warmthGain.gain.value = 0.005 * masterVolume;
   warmth.connect(warmthGain);
   warmthGain.connect(context.destination);
   warmth.start();
@@ -118,8 +127,8 @@ export function setMusicIntensity(isSuspicious: boolean) {
 
   const now = audio.currentTime;
   drone.frequency.setTargetAtTime(isSuspicious ? 82 : 74, now, 0.7);
-  droneGain.gain.setTargetAtTime(isSuspicious ? 0.014 : 0.008, now, 0.9);
-  windGain.gain.setTargetAtTime(isSuspicious ? 0.018 : 0.012, now, 0.9);
+  droneGain.gain.setTargetAtTime((isSuspicious ? 0.014 : 0.008) * masterVolume, now, 0.9);
+  windGain.gain.setTargetAtTime((isSuspicious ? 0.018 : 0.012) * masterVolume, now, 0.9);
 }
 
 export function stopAmbience() {
