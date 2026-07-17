@@ -1,0 +1,148 @@
+.kitchen-cabinets,
+.kitchen-counter {
+  background:
+    repeating-linear-gradient(90deg, #6b44291a 0 4px, transparent 4px 22px),
+    linear-gradient(90deg, #2b1a10, #6b4328 48%, #21130d);
+  border: 2px solid #160e09;
+  left: 8%;
+  width: 60%;
+}
+
+.kitchen-cabinets {
+  box-shadow: inset 0 0 18px #0007, 0 18px 30px #0007;
+  height: 104px;
+  top: 74px;
+}
+
+.cabinet-door, .cabinet-shelf { position: absolute; }
+
+.cabinet-door {
+  border: 2px solid #2b190f;
+  box-shadow: inset 0 0 10px #0008;
+  height: 74px;
+  top: 14px;
+  width: 25%;
+}
+
+.cabinet-door::after {
+  background: #c09a66;
+  border-radius: 999px;
+  content: "";
+  height: 5px;
+  position: absolute;
+  right: 12px;
+  top: 34px;
+  width: 5px;
+}
+
+.cabinet-door-left { left: 4%; }
+.cabinet-door-mid { left: 37%; }
+.cabinet-door-right { right: 4%; }
+.cabinet-shelf { background: #1d110b; bottom: -8px; height: 9px; left: -4px; right: -4px; }
+
+.kitchen-counter {
+  bottom: 150px;
+  box-shadow: inset 0 0 20px #0009, 0 22px 34px #0008;
+  height: 96px;
+}
+
+.kitchen-counter::before {
+  background: linear-gradient(90deg, #19100a, #8b5f38, #1a100a);
+  content: "";
+  height: 12px;
+  left: -8px;
+  position: absolute;
+  top: -12px;
+  width: calc(100% + 16px);
+}
+
+.stove {
+  background: linear-gradient(#15181c, #050608);
+  border: 2px solid #29313a;
+  height: 52px;
+  left: 7%;
+  top: 26px;
+  width: 94px;
+}
+
+.stove span {
+  background: radial-gradient(circle, transparent 38%, #6e7780 40% 45%, transparent 47%);
+  display: block;
+  height: 100%;
+  width: 100%;
+}
+
+.sink {
+  background: linear-gradient(#87929b, #3c4650);
+  border: 2px solid #222a31;
+  border-radius: 0 0 22px 22px;
+  height: 25px;
+  left: 48%;
+  top: 28px;
+  width: 86px;
+}
+
+.sink span {
+  background: #15191d;
+  border-radius: 50%;
+  display: block;
+  height: 7px;
+  margin: 9px auto 0;
+  width: 7px;
+}
+
+.faucet {
+  border: solid #aeb9c0;
+  border-width: 4px 4px 0 0;
+  border-radius: 0 14px 0 0;
+  height: 24px;
+  left: calc(48% + 34px);
+  top: 8px;
+  width: 26px;
+}
+
+.small-jars {
+  background:
+    linear-gradient(90deg, #d8c49a 0 13px, transparent 13px 23px, #9b5b42 23px 36px, transparent 36px 46px, #b9c6c9 46px 59px);
+  height: 29px;
+  right: 7%;
+  top: 38px;
+  width: 66px;
+}
+
+.fridge {
+  background: linear-gradient(90deg, #aeb8bd, #e3e1d6 44%, #8e999e);
+  border: 2px solid #343a3c;
+  border-radius: 4px 4px 9px 9px;
+  bottom: 150px;
+  box-shadow: inset 18px 0 24px #ffffff24, inset -16px 0 22px #0005, 0 24px 36px #0009;
+  height: 248px;
+  right: 9%;
+  width: 112px;
+}
+
+.fridge-freezer { border-bottom: 2px solid #454b4d; height: 72px; left: 0; position: absolute; top: 0; width: 100%; }
+
+.fridge-handle {
+  background: #31383a;
+  border-radius: 999px;
+  height: 42px;
+  position: absolute;
+  right: 10px;
+  width: 6px;
+}
+
+.fridge-handle-top { top: 16px; }
+.fridge-handle-bottom { top: 92px; }
+.fridge-note { background: #d0b577; height: 24px; left: 24px; position: absolute; top: 106px; transform: rotate(-4deg); width: 20px; }
+
+@media (max-width: 760px) {
+  .kitchen-cabinets,
+  .kitchen-counter { left: 6%; width: 56%; }
+  .kitchen-cabinets { height: 88px; top: 68px; }
+  .kitchen-counter { bottom: 134px; height: 82px; }
+  .fridge { bottom: 156px; height: 176px; right: 6%; width: 76px; }
+  .sink { left: 42%; width: 76px; }
+  .faucet { left: calc(42% + 30px); }
+  .small-jars { display: none; }
+}

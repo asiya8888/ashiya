@@ -6,6 +6,9 @@
 @import './styles/room-mobile.css';
 @import './styles/cabin-polish.css';
 @import './styles/connected-cabin.css';
+@import './styles/kitchen-shell.css';
+@import './styles/kitchen-fixtures.css';
+@import './styles/kitchen-table.css';
 @import './styles/guests.css';
 @import './styles/menu-scene.css';
 @import './styles/portrait.css';
