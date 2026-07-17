@@ -2,11 +2,10 @@ import type { RoomId } from '../lib/rooms';
 
 type DoorPromptProps = {
   currentRoom: RoomId;
-  onGoToDoor: () => void;
   onLook: () => void;
 };
 
-export function DoorPrompt({ currentRoom, onGoToDoor, onLook }: DoorPromptProps) {
+export function DoorPrompt({ currentRoom, onLook }: DoorPromptProps) {
   const atDoor = currentRoom === 'living';
 
   return (
@@ -15,11 +14,7 @@ export function DoorPrompt({ currentRoom, onGoToDoor, onLook }: DoorPromptProps)
       <h2>Someone is outside.</h2>
       <p>{atDoor ? 'The peephole waits in the dark.' : 'The sound comes from the living room.'}</p>
       <div className="choices door-choices">
-        {atDoor ? (
-          <button onClick={onLook} type="button">Look Through Peephole</button>
-        ) : (
-          <button onClick={onGoToDoor} type="button">Go To Front Door</button>
-        )}
+        {atDoor && <button onClick={onLook} type="button">Look Through Peephole</button>}
       </div>
     </section>
   );

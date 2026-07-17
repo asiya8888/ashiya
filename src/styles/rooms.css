@@ -33,10 +33,7 @@
   pointer-events: none;
 }
 
-.hotspot-kitchen { bottom: 92px; left: 4%; }
-.hotspot-bedroom { bottom: 92px; left: 48%; }
 .hotspot-front-door { right: 9%; top: 44%; }
-.hotspot-living { bottom: 84px; left: 6%; }
 
 .fireplace {
   background:

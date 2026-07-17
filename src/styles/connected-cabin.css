@@ -1,0 +1,98 @@
+.cabin-world {
+  display: flex;
+  height: 100%;
+  inset: 0;
+  min-height: inherit;
+  position: absolute;
+  transform: translateX(calc(var(--room-index) * -33.333%));
+  transition: transform 0.9s cubic-bezier(0.22, 0.78, 0.25, 1);
+  width: 300%;
+  z-index: 1;
+}
+
+.cabin-room {
+  flex: 0 0 33.333%;
+  min-height: inherit;
+  overflow: hidden;
+  position: relative;
+}
+
+.doorway {
+  background:
+    linear-gradient(90deg, #010101, #130b07 45%, #010101),
+    radial-gradient(ellipse at 50% 10%, #ffffff16, transparent 42%);
+  bottom: 34px;
+  box-shadow: inset 0 0 42px #000, 0 0 34px #000b;
+  height: 285px;
+  position: absolute;
+  width: 96px;
+  z-index: 2;
+}
+
+.doorway::after {
+  background: linear-gradient(90deg, transparent, #d9b99026, transparent);
+  content: "";
+  inset: 0;
+  opacity: 0.28;
+  position: absolute;
+}
+
+.doorway-left { left: 0; }
+.doorway-right { right: 0; }
+
+.walk-controls {
+  bottom: 18px;
+  display: flex;
+  gap: 10px;
+  left: 50%;
+  position: absolute;
+  transform: translateX(-50%);
+  z-index: 9;
+}
+
+.walk-controls button {
+  background: #05070ad9;
+  border: 1px solid #344257;
+  color: #d6dce4;
+  font-size: 0.76rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  min-width: 112px;
+  padding: 10px 12px;
+  text-transform: uppercase;
+}
+
+.walk-controls button:hover:not(:disabled),
+.walk-controls button:focus-visible {
+  border-color: #8d101b;
+}
+
+.walk-controls button:disabled {
+  opacity: 0.22;
+}
+
+.cabin-room .room-title {
+  opacity: 0.82;
+}
+
+.hotspot-front-door {
+  right: 8%;
+  top: 43%;
+}
+
+@media (max-width: 760px) {
+  .doorway {
+    height: 210px;
+    width: 66px;
+  }
+
+  .walk-controls {
+    bottom: 10px;
+    width: calc(100% - 24px);
+  }
+
+  .walk-controls button {
+    flex: 1;
+    min-width: 0;
+  }
+}

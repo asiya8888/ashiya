@@ -1,15 +1,12 @@
-import type { RoomId } from '../../lib/rooms';
 import { snowStyle } from '../../lib/snow';
 import { SceneHotspot } from './SceneHotspot';
 
 type LivingRoomSceneProps = {
-  canMove: boolean;
   hasKnock: boolean;
   onLookThroughDoor: () => void;
-  onMove: (room: RoomId) => void;
 };
 
-export function LivingRoomScene({ canMove, hasKnock, onLookThroughDoor, onMove }: LivingRoomSceneProps) {
+export function LivingRoomScene({ hasKnock, onLookThroughDoor }: LivingRoomSceneProps) {
   return (
     <>
       <p className="room-title">Living Room</p>
@@ -42,12 +39,8 @@ export function LivingRoomScene({ canMove, hasKnock, onLookThroughDoor, onMove }
           <span className="hinge hinge-bottom" />
         </div>
       </div>
-      <SceneHotspot className="hotspot-kitchen" disabled={!canMove} onClick={() => onMove('kitchen')}>
-        Kitchen
-      </SceneHotspot>
-      <SceneHotspot className="hotspot-bedroom" disabled={!canMove} onClick={() => onMove('bedroom')}>
-        Bedroom
-      </SceneHotspot>
+      <span className="doorway doorway-left" aria-hidden="true" />
+      <span className="doorway doorway-right" aria-hidden="true" />
       <SceneHotspot className="hotspot-front-door" disabled={!hasKnock} onClick={onLookThroughDoor}>
         Peephole
       </SceneHotspot>

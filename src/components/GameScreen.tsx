@@ -9,6 +9,7 @@ import { QuietMoment } from './QuietMoment';
 import { VisitorCard } from './VisitorCard';
 import type { RoomId } from '../lib/rooms';
 import { markGameCompleted, type GameSettings } from '../lib/settings';
+import { playDoorCreak } from '../lib/sounds';
 import { useCabinGame } from '../lib/useCabinGame';
 
 type GameScreenProps = {
@@ -27,18 +28,21 @@ export function GameScreen({ autoStart = false, onComplete, onSignOut, settings 
   const choiceLocked = game.status !== 'playing';
   const canExplore = game.status === 'waiting' || game.status === 'knocking';
 
+  const moveRoom = (nextRoom: RoomId) => {
+    if (!canExplore || nextRoom === room) return;
+    playDoorCreak();
+    setRoom(nextRoom);
+  };
   const signOut = () => {
     game.restart();
     setRoom('living');
     onSignOut();
   };
-
   const restartStory = () => {
     setIntroDone(settings.skipIntro);
     setRoom('living');
     game.restart();
   };
-
   const finishIntro = () => {
     setIntroDone(true);
     setRoom('living');
@@ -98,13 +102,13 @@ export function GameScreen({ autoStart = false, onComplete, onSignOut, settings 
             canMove={canExplore}
             hasKnock={game.status === 'knocking'}
             onLookThroughDoor={game.lookThroughPeephole}
-            onMove={setRoom}
+            onMove={moveRoom}
             room={room}
           />
           {game.status === 'waiting' ? (
             <QuietMoment outcome={game.outcome} settings={settings} />
           ) : game.status === 'knocking' ? (
-            <DoorPrompt currentRoom={room} onGoToDoor={() => setRoom('living')} onLook={game.lookThroughPeephole} />
+            <DoorPrompt currentRoom={room} onLook={game.lookThroughPeephole} />
           ) : (
             <VisitorCard
               disabled={choiceLocked}

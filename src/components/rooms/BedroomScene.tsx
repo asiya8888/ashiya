@@ -1,13 +1,6 @@
-import type { RoomId } from '../../lib/rooms';
 import { snowStyle } from '../../lib/snow';
-import { SceneHotspot } from './SceneHotspot';
 
-type BedroomSceneProps = {
-  canMove: boolean;
-  onMove: (room: RoomId) => void;
-};
-
-export function BedroomScene({ canMove, onMove }: BedroomSceneProps) {
+export function BedroomScene() {
   return (
     <>
       <p className="room-title">Bedroom</p>
@@ -24,9 +17,7 @@ export function BedroomScene({ canMove, onMove }: BedroomSceneProps) {
       </div>
       <div className="wall-picture" />
       <div className="closet-door" />
-      <SceneHotspot className="hotspot-living" disabled={!canMove} onClick={() => onMove('living')}>
-        Living Room
-      </SceneHotspot>
+      <span className="doorway doorway-left" aria-hidden="true" />
     </>
   );
 }
