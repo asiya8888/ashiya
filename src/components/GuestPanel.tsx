@@ -14,25 +14,31 @@ type GuestPanelProps = {
 };
 
 export function GuestPanel({ guests, isKnocking, message, onCheckGuests, onTalk, settings, visitorName }: GuestPanelProps) {
-  if (guests.length === 0) return null;
+  const hasGuests = guests.length > 0;
 
   return (
     <section className="guest-panel">
       <p className="label">Living room guests</p>
-      {message && <TypewriterText className="event-text" settings={settings} text={message} />}
-      <div className="guest-list">
-        {guests.map((guest) => (
-          <button key={guest.id} onClick={() => onTalk(guest.id)} type="button">
-            {guest.name}
-          </button>
-        ))}
-      </div>
-      <button className="guest-check" onClick={onCheckGuests} type="button">Check The Room</button>
+      <h2>{hasGuests ? 'By The Fire' : 'Empty Sofa'}</h2>
       <TypewriterText
         className="quote"
         settings={settings}
-        text={guestLine(guests[0], isKnocking, visitorName)}
+        text={hasGuests ? 'Your guests are sitting on the sofa near the fireplace.' : 'No one is staying in the living room right now.'}
       />
+      {message && <TypewriterText className="event-text" settings={settings} text={message} />}
+      {hasGuests && (
+        <>
+          <div className="guest-list">
+            {guests.map((guest) => (
+              <button key={guest.id} onClick={() => onTalk(guest.id)} type="button">
+                {guest.name}
+              </button>
+            ))}
+          </div>
+          <button className="guest-check" onClick={onCheckGuests} type="button">Check The Living Room</button>
+          <TypewriterText className="quote" settings={settings} text={guestLine(guests[0], isKnocking, visitorName)} />
+        </>
+      )}
     </section>
   );
 }

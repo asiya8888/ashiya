@@ -32,7 +32,7 @@ export function GameSidePanel(props: GameSidePanelProps) {
   if (props.status === 'waiting' && props.room === 'living') return (
     <GuestPanel guests={props.guests} isKnocking={false} message={props.guestMessage || props.outcome} onCheckGuests={props.onCheckGuests} onTalk={props.onTalkGuest} settings={props.settings} />
   );
-  if (props.status === 'waiting') return <QuietMoment outcome={props.outcome} settings={props.settings} />;
+  if (props.status === 'waiting') return <QuietMoment outcome={props.outcome} room={props.room} settings={props.settings} />;
   if (props.status === 'knocking' && props.room === 'living' && props.guests.length > 0) return (
     <GuestPanel guests={props.guests} isKnocking message="Someone is outside." onCheckGuests={props.onCheckGuests} onTalk={props.onTalkGuest} settings={props.settings} visitorName={props.visitor.name} />
   );

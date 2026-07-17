@@ -55,13 +55,17 @@ export function useCabinGuests() {
   };
 
   const checkGuests = (score: number) => {
+    if (guests.length === 0) {
+      setGuestMessage('The living room is empty. The sofa faces the fire, waiting for whoever survives the next knock.');
+      return;
+    }
     const delayedMimic = guests.some((guest) => guest.kind === 'skinwalker' && score > guest.arrivedAt);
     if (delayedMimic && guests.some((guest) => guest.kind === 'human')) {
       setGuestMessage('The chairs are overturned. The room is silent. No one answers when you say their names.');
       setDelayedEnding(true);
       return;
     }
-    setGuestMessage('The guests are quiet, listening to the storm and the door.');
+    setGuestMessage(`${guests.map((guest) => guest.name).join(', ')} ${guests.length === 1 ? 'is' : 'are'} sitting on the living room sofa, listening to the storm and the door.`);
   };
 
   return { addAllowedGuest, advanceNight, checkGuests, delayedEnding, guestMessage, guests, resetGuests, talkGuest };
