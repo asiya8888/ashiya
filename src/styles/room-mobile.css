@@ -1,0 +1,7 @@
+@media (max-width: 760px) {
+  .fireplace { bottom: 54px; height: 128px; left: 45%; width: 120px; }
+  .mantel { width: 154px; }
+  .living-sofa { left: 7%; transform: scale(0.78); transform-origin: bottom left; }
+  .kitchen-window, .bedroom-window { height: 118px; width: 150px; }
+  .scene-hotspot { font-size: 0.68rem; min-height: 38px; padding: 7px 9px; }
+}

@@ -1,0 +1,96 @@
+.kitchen-cabinets,
+.kitchen-counter {
+  background: linear-gradient(90deg, #130d0a, #312116, #120c09);
+  border: 1px solid #050403;
+  box-shadow: inset 0 0 18px #0009;
+  left: 6%;
+  position: absolute;
+  width: 84%;
+  z-index: 2;
+}
+
+.kitchen-cabinets { height: 92px; top: 72px; }
+.kitchen-counter { bottom: 135px; height: 86px; }
+.cabinet-row, .sink, .stove, .small-jars, .mug { position: absolute; }
+.cabinet-row {
+  background: repeating-linear-gradient(90deg, #0000 0 64px, #0007 65px 68px);
+  inset: 12px;
+}
+
+.sink { background: #5b6670; height: 12px; left: 47%; top: 20px; width: 70px; }
+.stove { background: #08090b; height: 42px; left: 14%; top: 22px; width: 90px; }
+.small-jars {
+  background: repeating-linear-gradient(90deg, #a18562 0 12px, transparent 13px 23px);
+  height: 28px;
+  right: 20%;
+  top: 22px;
+  width: 94px;
+}
+
+.fridge {
+  background: linear-gradient(90deg, #1b2028, #424b54, #151a21);
+  bottom: 135px;
+  height: 230px;
+  position: absolute;
+  right: 7%;
+  width: 94px;
+  z-index: 2;
+}
+
+.table {
+  background: linear-gradient(90deg, #1b100b, #4a2e1d, #160d09);
+  bottom: 62px;
+  box-shadow: 0 18px 28px #0009;
+  height: 74px;
+  left: 36%;
+  position: absolute;
+  width: 260px;
+  z-index: 3;
+}
+
+.chair {
+  background: linear-gradient(#27180f, #120b08);
+  bottom: -22px;
+  height: 62px;
+  position: absolute;
+  width: 38px;
+}
+
+.chair-left { left: -48px; }
+.chair-right { right: -48px; }
+.chair-back { left: 42%; top: -56px; }
+.mug { background: #8a745f; height: 24px; left: 52%; top: -18px; width: 20px; }
+
+.bed {
+  background: linear-gradient(180deg, #252c36, #11161d);
+  bottom: 82px;
+  box-shadow: 0 24px 42px #000b;
+  height: 150px;
+  left: 18%;
+  position: absolute;
+  width: 390px;
+  z-index: 2;
+}
+
+.pillow,
+.blanket,
+.bed-frame,
+.nightstand,
+.closet-door,
+.wall-picture {
+  position: absolute;
+}
+
+.pillow { background: #66707c; height: 40px; left: 34px; top: 18px; width: 100px; }
+.blanket { background: #263241; bottom: 0; height: 84px; right: 0; width: 280px; }
+.bed-frame { border: 3px solid #170e09; inset: -8px; }
+.nightstand { background: #21150f; bottom: 82px; height: 78px; right: 22%; width: 78px; z-index: 2; }
+.lamp { background: radial-gradient(circle, #c28b53, transparent 66%); height: 70px; left: 14px; position: absolute; top: -58px; width: 48px; }
+.closet-door { background: linear-gradient(90deg, #100b08, #2a1a12, #100b08); bottom: 88px; height: 330px; left: 8%; width: 110px; z-index: 1; }
+.wall-picture { border: 6px solid #100b08; height: 70px; left: 43%; top: 104px; width: 108px; }
+
+@media (max-width: 760px) {
+  .table { left: 28%; width: 210px; }
+  .bed { height: 122px; left: 15%; width: 300px; }
+  .fridge { height: 190px; width: 78px; }
+}

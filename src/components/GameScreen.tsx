@@ -6,7 +6,6 @@ import { GameHud } from './GameHud';
 import { GameReadyMenu } from './GameReadyMenu';
 import { IntroSequence } from './IntroSequence';
 import { QuietMoment } from './QuietMoment';
-import { RoomNavigation } from './RoomNavigation';
 import { VisitorCard } from './VisitorCard';
 import type { RoomId } from '../lib/rooms';
 import { markGameCompleted, type GameSettings } from '../lib/settings';
@@ -94,9 +93,14 @@ export function GameScreen({ autoStart = false, onComplete, onSignOut, settings 
           onSignOut={signOut}
         />
         <p className="subtitle">{game.subtitle}</p>
-        <RoomNavigation currentRoom={room} disabled={!canExplore} onChange={setRoom} />
         <div className="game-layout">
-          <CabinScene room={room} />
+          <CabinScene
+            canMove={canExplore}
+            hasKnock={game.status === 'knocking'}
+            onLookThroughDoor={game.lookThroughPeephole}
+            onMove={setRoom}
+            room={room}
+          />
           {game.status === 'waiting' ? (
             <QuietMoment outcome={game.outcome} settings={settings} />
           ) : game.status === 'knocking' ? (
