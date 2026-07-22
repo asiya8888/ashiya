@@ -8,7 +8,7 @@ import { resolveChoice } from './outcomes';
 import { questions, questionText, type QuestionKey } from './questions';
 import { takeRandom } from './random';
 import { createVisitorRun, initialRunStats, makeRunVisitor } from './runVisitors';
-import { playDoorCreak, playJumpscare, playKnock, setMusicIntensity, startAmbience, stopAmbience } from './sounds';
+import { playJumpscare, playKnock, setMusicIntensity, startAmbience, stopAmbience } from './sounds';
 import type { GameStatus } from './gameTypes';
 import type { Visitor } from './visitors';
 import type { VisitorMemory } from './visitorMemory';
@@ -100,7 +100,7 @@ export function useCabinGame() {
     setStatus('waiting'); nextVisitorTimer.current = window.setTimeout(nextVisitor, encounterDelay());
   };
   const lookThroughPeephole = () => {
-    playDoorCreak(); setStatus('playing'); setMusicIntensity(visitor.kind === 'skinwalker');
+    setStatus('playing'); setMusicIntensity(visitor.kind === 'skinwalker');
   };
 
   const askQuestion = () => {

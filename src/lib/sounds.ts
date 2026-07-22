@@ -10,7 +10,6 @@ let wind: OscillatorNode | null = null;
 let drone: OscillatorNode | null = null;
 let windGain: GainNode | null = null;
 let droneGain: GainNode | null = null;
-let fireTimer: number | null = null;
 let stopMelody: (() => void) | null = null;
 let masterVolume = 0.7;
 
@@ -43,13 +42,6 @@ export function tone(frequency: number, start: number, length: number, volume: n
 export function softNoise(start: number, length: number, volume: number) {
   const context = getAudio();
   if (context) noiseBurst(context, start, length, volume * masterVolume);
-}
-
-function scheduleFire() {
-  fireTimer = window.setTimeout(() => {
-    softNoise(0, 0.035 + Math.random() * 0.035, 0.018);
-    scheduleFire();
-  }, 180 + Math.random() * 900);
 }
 
 export function setMasterVolume(volume: number) {
@@ -109,7 +101,6 @@ export function startAmbience() {
   droneGain.connect(context.destination);
   drone.start();
 
-  scheduleFire();
   stopMelody = startAmbientMelody(context, () => masterVolume);
 }
 
@@ -123,9 +114,7 @@ export function setMusicIntensity(isSuspicious: boolean) {
 }
 
 export function stopAmbience() {
-  if (fireTimer) window.clearTimeout(fireTimer);
   stopMelody?.();
-  fireTimer = null;
   stopMelody = null;
 
   [wind, drone].forEach((node) => {
