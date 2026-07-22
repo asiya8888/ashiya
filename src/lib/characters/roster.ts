@@ -1,22 +1,8 @@
 import { mainCharacters } from './mainCharacters';
-import { randomCharactersA } from './randomCharactersA';
-import { randomCharactersB } from './randomCharactersB';
-import { randomCharactersC } from './randomCharactersC';
-import { rareCharacters } from './rareCharacters';
+import { randomCharacters } from './randomCharacters';
 import type { GameCharacter } from './types';
 
-const bonusRandomCharacters = rareCharacters.slice(0, 5).map((character) => ({
-  ...character,
-  tier: 'random' as const,
-  rareCondition: undefined,
-}));
-
-export const randomCharacters = [
-  ...randomCharactersA,
-  ...randomCharactersB,
-  ...randomCharactersC,
-  ...bonusRandomCharacters,
-];
+export { randomCharacters };
 export const allCharacters = [...mainCharacters, ...randomCharacters];
 
 export function findCharacter(id: string) {

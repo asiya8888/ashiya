@@ -27,7 +27,7 @@ export function makeCharacterConversation(
   memories: VisitorMemory[] = [],
 ): ConversationProfile {
   const hash = hashId(character.id);
-  const age = pickStable(['nineteen', 'twenty-seven', 'thirty-four', 'forty-one', 'forty-eight', 'fifty-six', 'sixty-three'], hash);
+  const age = character.age?.toString() ?? pickStable(['nineteen', 'twenty-seven', 'thirty-four', 'forty-one', 'forty-eight', 'fifty-six', 'sixty-three'], hash);
   const origin = pickStable(['the lower village', 'the northern ridge', 'the reservoir road', 'the old lodge', 'the eastern pass'], hash, 2);
   const previous = memories[0];
   const witness = previous

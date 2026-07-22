@@ -6,6 +6,8 @@ export type GameCharacter = {
   id: string;
   tier: CharacterTier;
   name: string;
+  age?: number;
+  gender?: 'female' | 'male';
   kind: VisitorKind;
   personality: string;
   appearance: string;
