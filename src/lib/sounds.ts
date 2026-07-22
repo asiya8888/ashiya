@@ -1,4 +1,5 @@
 import { noiseBurst } from './noise';
+import { startAmbientMelody } from './ambientMelody';
 
 type LegacyAudioWindow = Window & typeof globalThis & {
   webkitAudioContext?: typeof AudioContext;
@@ -10,9 +11,8 @@ let drone: OscillatorNode | null = null;
 let windGain: GainNode | null = null;
 let droneGain: GainNode | null = null;
 let fireTimer: number | null = null;
+let stopMelody: (() => void) | null = null;
 let masterVolume = 0.7;
-
-export type ButtonSound = 'allow' | 'ask' | 'inspect';
 
 function getAudio() {
   const AudioCtor = window.AudioContext || (window as LegacyAudioWindow).webkitAudioContext;
@@ -58,27 +58,6 @@ export function setMasterVolume(volume: number) {
   const now = audio.currentTime;
   windGain?.gain.setTargetAtTime(0.012 * masterVolume, now, 0.2);
   droneGain?.gain.setTargetAtTime(0.008 * masterVolume, now, 0.2);
-}
-
-export function playButtonSound(sound?: ButtonSound) {
-  if (sound === 'allow') {
-    tone(82, 0, 0.12, 0.12, 'triangle');
-    softNoise(0.03, 0.1, 0.04);
-    tone(54, 0.1, 0.2, 0.08, 'sine');
-    return;
-  }
-  if (sound === 'inspect') {
-    tone(510, 0, 0.05, 0.045, 'sine');
-    tone(340, 0.055, 0.09, 0.035, 'triangle');
-    return;
-  }
-  if (sound === 'ask') {
-    tone(210, 0, 0.06, 0.04, 'triangle');
-    tone(255, 0.07, 0.08, 0.035, 'triangle');
-    return;
-  }
-  tone(170, 0, 0.045, 0.035, 'triangle');
-  tone(115, 0.035, 0.055, 0.025, 'sine');
 }
 
 export function playKnock() {
@@ -131,6 +110,7 @@ export function startAmbience() {
   drone.start();
 
   scheduleFire();
+  stopMelody = startAmbientMelody(context, () => masterVolume);
 }
 
 export function setMusicIntensity(isSuspicious: boolean) {
@@ -144,7 +124,9 @@ export function setMusicIntensity(isSuspicious: boolean) {
 
 export function stopAmbience() {
   if (fireTimer) window.clearTimeout(fireTimer);
+  stopMelody?.();
   fireTimer = null;
+  stopMelody = null;
 
   [wind, drone].forEach((node) => {
     node?.stop();

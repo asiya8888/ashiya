@@ -5,9 +5,10 @@ import { DiaryFragment } from './components/DiaryFragment';
 import { GameScreen } from './components/GameScreen';
 import { SettingsPanel } from './components/SettingsPanel';
 import { clearAuthCallbackUrl, readAuthErrorFromUrl } from './lib/auth';
+import { playButtonSound, type ButtonSound } from './lib/buttonSounds';
 import { hasCompletedGame, readSettings, saveSettings, type GameSettings } from './lib/settings';
 import { snowStyle } from './lib/snow';
-import { playButtonSound, setMasterVolume, startAmbience, type ButtonSound } from './lib/sounds';
+import { setMasterVolume, startAmbience } from './lib/sounds';
 import { supabase } from './lib/supabase';
 
 type MenuPanel = 'auth' | 'diary' | 'settings' | null;
@@ -54,7 +55,9 @@ function App() {
       if (!(event.target instanceof Element)) return;
       const button = event.target.closest<HTMLButtonElement>('button');
       if (!button || button.disabled) return;
-      playButtonSound(button.dataset.clickSound as ButtonSound | undefined);
+      const isWelcomeButton = Boolean(button.closest('.login-shell, .menu-shell, .intro-shell'));
+      const sound = button.dataset.clickSound as ButtonSound | undefined;
+      playButtonSound(sound ?? (isWelcomeButton ? 'menu' : undefined));
     };
 
     document.addEventListener('click', playClick);
