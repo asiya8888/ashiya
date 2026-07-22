@@ -90,11 +90,7 @@ function App() {
   if (!session || !showGame) {
     return (
       <main className="login-shell">
-        <div className="login-cabin" aria-hidden="true">
-          <span className="login-window" />
-          <span className="login-smoke login-smoke-one" />
-          <span className="login-smoke login-smoke-two" />
-        </div>
+        <div className="login-cabin" aria-hidden="true" />
         {loginSnow}
         <section className="login-copy" aria-label="Whiteout title menu">
           <div>

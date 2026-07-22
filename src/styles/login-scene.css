@@ -1,60 +1,8 @@
 .login-cabin {
-  background:
-    linear-gradient(145deg, transparent 0 36%, #090d12 36% 52%, transparent 52%),
-    linear-gradient(215deg, transparent 0 36%, #111722 36% 52%, transparent 52%),
-    repeating-linear-gradient(90deg, #ffffff06 0 1px, transparent 1px 54px),
-    linear-gradient(#151b24, #05070a);
-  border-bottom: 16px solid #05070a;
-  bottom: 0;
-  box-shadow: 0 34px 90px #000, inset 0 -90px 90px #000b, 0 0 45px #1d3d5c22;
-  height: min(54vh, 430px);
-  left: 0;
-  opacity: 0.9;
-  position: fixed;
-  width: min(760px, 82vw);
-  z-index: 0;
-}
-
-.login-cabin::before {
-  background:
-    linear-gradient(90deg, #05070a 0 4px, transparent 4px 100%),
-    linear-gradient(170deg, transparent 0 42%, #05070a 43% 45%, transparent 46%);
-  bottom: 35%;
-  content: "";
-  height: 210px;
-  left: 72%;
-  position: absolute;
-  width: 230px;
-}
-
-.login-cabin::after {
-  background:
-    linear-gradient(180deg, transparent 0 68%, #0008 100%),
-    repeating-linear-gradient(0deg, #ffffff06 0 1px, transparent 1px 5px);
-  content: "";
+  background: #000;
   inset: 0;
-  position: absolute;
-}
-
-.login-window {
-  display: none;
-}
-
-.login-smoke {
-  animation: chimneySmoke 7s ease-in-out infinite;
-  background: #d8dce026;
-  border-radius: 50%;
-  height: 52px;
-  left: 36%;
-  position: absolute;
-  top: 5%;
-  width: 34px;
-}
-
-.login-smoke-two {
-  animation-delay: 2.4s;
-  left: 39%;
-  opacity: 0.55;
+  position: fixed;
+  z-index: 0;
 }
 
 .login-snow {
@@ -67,16 +15,6 @@
   z-index: 2;
 }
 
-@media (max-width: 760px) {
-  .login-cabin { left: -28vw; width: 135vw; }
-}
-
 @keyframes loginSnow {
   to { transform: translate(var(--drift), 110vh) rotate(var(--spin)); }
-}
-
-@keyframes chimneySmoke {
-  from { opacity: 0; transform: translateY(0) scale(0.65); }
-  35% { opacity: 0.5; }
-  to { opacity: 0; transform: translate(28px, -120px) scale(1.8); }
 }
