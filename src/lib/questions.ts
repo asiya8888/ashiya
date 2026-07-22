@@ -49,14 +49,35 @@ const special: Record<string, CharacterQuestion[]> = {
     { id: 'late', text: 'Why are you outside so late?', answer: 'The power failed. I left when somebody began trying every door on my floor.' },
     { id: 'dorm', text: "Why didn't you stay at your dorm?", answer: 'My roommate called me from downstairs. She was asleep in the bed beside me.' },
   ],
+  photographer: [
+    { id: 'camera', text: 'Why did you bring the camera?', answer: 'It was already around my neck when I ran. I did not stop to take anything else.' },
+    { id: 'lodge', text: 'What happened at the lodge?', answer: 'The power failed while I was photographing the storm. After the last flash, I saw someone standing behind me in the picture.' },
+    { id: 'route', text: 'How did you reach the cabin?', answer: 'I followed the tree line uphill. Whenever I stopped, I could hear another set of footsteps stop a few seconds later.' },
+  ],
 };
 
 export function questionsFor(character: GameCharacter): CharacterQuestion[] {
   if (special[character.id]) return special[character.id];
   const work = details[character.id] ?? { place: 'road', item: 'bag', route: 'tree line' };
+  const variation = character.id.split('').reduce((sum, letter) => sum + letter.charCodeAt(0), 0) % 3;
+  const workAnswers = [
+    `I was locking up the ${work.place} when the power failed. I heard someone outside and left through the back.`,
+    `The storm hit while I was still at the ${work.place}. Then something began walking around the building, slowly, more than once.`,
+    `I stayed at the ${work.place} as long as I could. I left when the windows started rattling although the wind had stopped.`,
+  ];
+  const routeAnswers = [
+    `I kept to the ${work.route}. I lost it in the snow and walked uphill until I saw the light above your door.`,
+    `The ${work.route} was still visible at first. After that I used the power lines to keep moving in one direction.`,
+    `I tried to follow the ${work.route}, but the tracks ahead of me looked exactly like mine. I cut through the trees instead.`,
+  ];
+  const itemAnswers = [
+    `I grabbed the ${work.item} without thinking. I use it every day; leaving it felt wrong.`,
+    `The ${work.item} was already in my hand when I left. I have not had a safe place to put it down.`,
+    `I thought the ${work.item} might be useful if I had to spend the night outside. That was before my hands went numb.`,
+  ];
   return [
-    { id: 'work', text: `What happened at the ${work.place}?`, answer: `I stayed at the ${work.place} until the windows started shaking. Then I heard footsteps outside and left through the nearest door.` },
-    { id: 'route', text: `How did you get here from the ${work.place}?`, answer: `I followed the ${work.route} until the snow hid it. Your light was the first thing I could still see.` },
-    { id: 'carry', text: `Why are you carrying ${work.item}?`, answer: `It belongs to my work. I kept it because leaving it behind felt worse than carrying the weight.` },
+    { id: 'work', text: `What happened at the ${work.place}?`, answer: workAnswers[variation] },
+    { id: 'route', text: `How did you get here from the ${work.place}?`, answer: routeAnswers[(variation + 1) % 3] },
+    { id: 'carry', text: `Why are you carrying ${work.item}?`, answer: itemAnswers[(variation + 2) % 3] },
   ];
 }
