@@ -4,6 +4,7 @@ import { markGameCompleted, type GameSettings } from '../lib/settings';
 import { useCabinGame } from '../lib/useCabinGame';
 import { useCabinGuests } from '../lib/useCabinGuests';
 import { CabinScene } from './CabinScene';
+import { ConsequenceScreen } from './ConsequenceScreen';
 import { DoorPrompt } from './DoorPrompt';
 import { GameEndOverlays } from './GameEndOverlays';
 import { GameHud } from './GameHud';
@@ -101,6 +102,7 @@ export function GameScreen({ autoStart = false, onComplete, onSignOut, settings 
           settings={settings} visitor={game.visitor}
         />
       )}
+      {game.status === 'consequence' && <ConsequenceScreen message={game.outcome} />}
       {transitioning && <div className="peephole-blackout" aria-hidden="true" />}
       {game.status === 'jumpscare' && <div className="jumpscare"><span>Game Over</span></div>}
       <GameEndOverlays

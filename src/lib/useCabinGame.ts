@@ -88,13 +88,17 @@ export function useCabinGame() {
       const nextLives = lives - result.livesLost;
       setLives(nextLives);
       if (nextLives <= 0) {
-        setStatus('lost'); playJumpscare(); stopAmbience();
+        setStatus('consequence');
+        nextVisitorTimer.current = window.setTimeout(() => {
+          setStatus('lost');
+          stopAmbience();
+        }, 3200);
         return;
       }
     }
     if (result.suppliesLost > 0) setSupplies((current) => Math.max(0, current - result.suppliesLost));
     if (visitor.kind === 'skinwalker' && choice === 'allow') run.current.hadMimicInside = true;
-    setStatus('waiting'); nextVisitorTimer.current = window.setTimeout(nextVisitor, encounterDelay());
+    setStatus('consequence'); nextVisitorTimer.current = window.setTimeout(nextVisitor, 3200);
   };
   const lookThroughPeephole = () => {
     setStatus('playing'); setMusicIntensity(visitor.kind === 'skinwalker');

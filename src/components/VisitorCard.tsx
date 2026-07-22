@@ -34,10 +34,10 @@ export function VisitorCard({
     <section className="visitor-card visitor-stage" key={visitor.id}>
       <div className="visitor-portrait-wrap">
         {visitor.face ? <VisitorFace face={visitor.face} portrait={visitor.portrait} /> : <div className="empty-porch">No one is there.</div>}
-        <p className="visual-clue">{visitor.inspections[0]}</p>
+        <p className="visual-clue">{visitor.inspections[1] ?? visitor.inspections[0]}</p>
       </div>
       <div className="visitor-dialogue-box">
-        <p className="visitor-role">{visitor.name}</p>
+        <p className="visitor-role">A voice beyond the door</p>
         <TypewriterText className="quote" settings={settings} text={visitor.dialogue[0]} />
         <InteractionLog entries={entries} outcome={outcome} settings={settings} />
         {questions.length > 0 && <div className="question-list">
@@ -46,8 +46,8 @@ export function VisitorCard({
           ))}
         </div>}
         <div className="decision-row">
-          <button className="allow-button" disabled={disabled} onClick={onAllow}>Open the door</button>
-          <button className="refuse-button" disabled={disabled} onClick={onRefuse}>Keep it closed</button>
+          <button className="allow-button" disabled={disabled} onClick={onAllow}>Let them in</button>
+          <button className="refuse-button" disabled={disabled} onClick={onRefuse}>Refuse</button>
         </div>
       </div>
     </section>
