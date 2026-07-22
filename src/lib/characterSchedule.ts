@@ -1,15 +1,9 @@
 import { FINAL_NIGHT, TOTAL_VISITORS } from './gameConfig';
 import { mainCharacters } from './characters/mainCharacters';
 import { randomCharacters } from './characters/roster';
-import { rareCharacters } from './characters/rareCharacters';
 import type { GameCharacter } from './characters/types';
 
-export type RunContext = {
-  helped: number;
-  refused: number;
-  supplies: number;
-  hadMimicInside: boolean;
-};
+export type RunContext = { helped: number; refused: number; supplies: number; hadMimicInside: boolean };
 
 export type CharacterSchedule = Record<number, GameCharacter[]>;
 
@@ -38,33 +32,15 @@ export function createCharacterSchedule(seed = Date.now()) {
   const schedule = emptySchedule();
   const mainPool = shuffle(mainCharacters, seed);
   const randomPool = shuffle(randomCharacters, seed + 401);
-  const rarePool = shuffle(rareCharacters, seed + 907);
-  let randomIndex = 0;
-
-  mainPool.forEach((character, index) => {
-    const night = (index % FINAL_NIGHT) + 1;
-    schedule[night].push(character);
-  });
+  const selected = [...mainPool, ...randomPool.slice(0, 10)];
+  const visitorDeck = shuffle(selected, seed + 907);
 
   for (let night = 1; night <= FINAL_NIGHT; night += 1) {
-    if (night > 2 && Math.random() < 0.16) schedule[night].push(rarePool.shift() ?? randomPool[randomIndex]);
-    while (schedule[night].length < TOTAL_VISITORS) {
-      schedule[night].push(randomPool[randomIndex % randomPool.length]);
-      randomIndex += 1;
-    }
-    schedule[night] = shuffle(schedule[night], seed + night * 37).slice(0, TOTAL_VISITORS);
+    const start = (night - 1) * TOTAL_VISITORS;
+    schedule[night] = visitorDeck.slice(start, start + TOTAL_VISITORS);
   }
 
   return schedule;
-}
-
-export function rareAllowed(character: GameCharacter, night: number, context: RunContext) {
-  if (character.tier !== 'rare') return true;
-  if (character.rareCondition === 'late') return night >= 5;
-  if (character.rareCondition === 'lowSupplies') return context.supplies <= 1;
-  if (character.rareCondition === 'manyRefusals') return context.refused >= 4;
-  if (character.rareCondition === 'afterMimicInside') return context.hadMimicInside;
-  return night >= 3;
 }
 
 export function scheduledCharacter(
@@ -73,8 +49,7 @@ export function scheduledCharacter(
   visitorIndex: number,
   context: RunContext,
 ) {
-  const planned = schedule[night]?.[visitorIndex - 1];
-  if (!planned) return randomCharacters[(night * visitorIndex) % randomCharacters.length];
-  if (rareAllowed(planned, night, context) && (planned.tier !== 'rare' || Math.random() < 0.35)) return planned;
-  return randomCharacters[(night * 11 + visitorIndex * 7 + context.refused) % randomCharacters.length];
+  void context;
+  return schedule[night]?.[visitorIndex - 1]
+    ?? randomCharacters[(night * visitorIndex) % randomCharacters.length];
 }

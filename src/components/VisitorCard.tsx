@@ -33,7 +33,7 @@ export function VisitorCard({
 }: VisitorCardProps) {
   return (
     <section className="visitor-card" key={visitor.id}>
-      {visitor.face ? <VisitorFace face={visitor.face} /> : <div className="empty-porch">No one is there.</div>}
+      {visitor.face ? <VisitorFace face={visitor.face} portrait={visitor.portrait} /> : <div className="empty-porch">No one is there.</div>}
       <div className="visitor-copy">
         <p className="label">{visitor.groupSize > 1 ? 'Multiple visitors' : 'Someone is at the door'}</p>
         <h2>{visitor.name}</h2>

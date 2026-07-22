@@ -1,18 +1,57 @@
 .seated-guests {
-  bottom: 108px;
+  align-items: end;
+  bottom: 100px;
   display: flex;
-  gap: 12px;
-  left: 15%;
+  gap: 10px;
+  left: 13%;
   position: absolute;
-  z-index: 4;
+  z-index: 7;
 }
 
-.seated-guests span {
-  background: linear-gradient(90deg, #07090d, #263241 48%, #050607);
-  border-radius: 45% 45% 18px 18px;
-  box-shadow: inset 0 0 16px #000, 0 12px 18px #0009;
-  height: 74px;
-  width: 34px;
+.seated-guest {
+  align-items: center;
+  background: linear-gradient(180deg, #d0b083 0 20%, #38495b 21% 100%);
+  border: 1px solid #f0d29a66;
+  border-radius: 50% 50% 14px 14px;
+  box-shadow: inset 0 -18px 16px #0008, 0 12px 18px #000b;
+  color: #111722;
+  display: grid;
+  font-size: 0.64rem;
+  font-weight: 900;
+  height: 82px;
+  justify-items: center;
+  width: 42px;
+}
+
+.seated-guest b {
+  background: #f4d7a4;
+  border-radius: 999px;
+  line-height: 1;
+  margin-top: -28px;
+  padding: 5px 4px;
+}
+
+.room-guest-count,
+.guest-name-tag {
+  background: #05070acc;
+  border: 1px solid #d9b99055;
+  color: #f1dfbd;
+  font-size: 0.72rem;
+  font-weight: 800;
+  left: 13%;
+  padding: 6px 8px;
+  position: absolute;
+  text-transform: uppercase;
+  z-index: 8;
+}
+
+.room-guest-count {
+  top: 52px;
+}
+
+.guest-name-tag {
+  bottom: 188px;
+  max-width: 210px;
 }
 
 .guest-panel {

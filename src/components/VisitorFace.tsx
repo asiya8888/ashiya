@@ -2,9 +2,11 @@ import type { FaceFeature } from '../lib/visitors';
 
 type VisitorFaceProps = {
   face: FaceFeature;
+  portrait?: string;
 };
 
-export function VisitorFace({ face }: VisitorFaceProps) {
+export function VisitorFace({ face, portrait }: VisitorFaceProps) {
+  if (portrait) return <div className="portrait portrait--photo"><img alt="Visitor portrait" src={portrait} /></div>;
   const eyes = face.eyes === 'three' ? [0, 1, 2] : [0, 1];
 
   return (

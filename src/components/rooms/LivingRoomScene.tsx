@@ -2,15 +2,20 @@ import { snowStyle } from '../../lib/snow';
 import { SceneHotspot } from './SceneHotspot';
 
 type LivingRoomSceneProps = {
-  guestCount: number;
+  guestNames: string[];
   hasKnock: boolean;
   onLookThroughDoor: () => void;
 };
 
-export function LivingRoomScene({ guestCount, hasKnock, onLookThroughDoor }: LivingRoomSceneProps) {
+const initials = (name: string) => name.split(' ').map((part) => part[0]).join('').slice(0, 2);
+
+export function LivingRoomScene({ guestNames, hasKnock, onLookThroughDoor }: LivingRoomSceneProps) {
+  const visibleGuests = guestNames.slice(0, 3);
+
   return (
     <>
       <p className="room-title">Living Room</p>
+      {guestNames.length > 0 && <p className="room-guest-count">Guests: {guestNames.length}</p>}
       <div className="window-frame">
         <div className="window">
           {Array.from({ length: 36 }, (_, index) => <span className="snowflake" key={index} style={snowStyle(index)} />)}
@@ -28,8 +33,13 @@ export function LivingRoomScene({ guestCount, hasKnock, onLookThroughDoor }: Liv
         <span className="sofa-seat" />
       </div>
       <div className="seated-guests" aria-hidden="true">
-        {Array.from({ length: Math.min(guestCount, 3) }, (_, index) => <span key={index} />)}
+        {visibleGuests.map((name) => (
+          <span className="seated-guest" key={name}>
+            <b>{initials(name)}</b>
+          </span>
+        ))}
       </div>
+      {visibleGuests.length > 0 && <p className="guest-name-tag">{visibleGuests.map((name) => name.split(' ')[0]).join(', ')}</p>}
       <div className="coat-rack" aria-hidden="true" />
       <div className="door-frame">
         <div className="door">

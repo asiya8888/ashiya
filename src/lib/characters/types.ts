@@ -13,6 +13,7 @@ export type GameCharacter = {
   dialogue: string[];
   inspections: string[];
   behaviors: string[];
+  portrait?: string;
   stayNights: [number, number];
   outcome?: MoralOutcome;
   knows?: string[];

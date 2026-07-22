@@ -36,6 +36,7 @@ export type Visitor = {
   eventSound?: EventSound;
   outcome: MoralOutcome;
   character?: GameCharacter;
+  portrait?: string;
 };
 
 const pick = <T,>(items: T[]) => items[Math.floor(Math.random() * items.length)];
@@ -75,13 +76,14 @@ export const makeVisitor = (id: number, night: number, character: GameCharacter,
     id,
     kind: character.kind,
     name: character.name,
-    groupSize: character.id === 'twins' ? 2 : 1,
+    groupSize: character.id === 'twin-sisters' ? 2 : 1,
     eventSound,
     outcome: character.outcome ?? 'peaceful',
-    conversation: makeCharacterConversation(character),
+    conversation: makeCharacterConversation(character, night, memories),
     dialogue: [dialogue, ...character.dialogue.slice(1)],
     inspections: [character.appearance, ...character.inspections, ...character.behaviors],
     face: makeFace(character, night),
     character,
+    portrait: character.portrait,
   };
 };

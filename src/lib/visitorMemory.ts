@@ -8,6 +8,6 @@ export type VisitorMemory = {
 
 export function memoryLine(memory?: VisitorMemory) {
   if (!memory) return '';
-  if (memory.choice === 'allow') return "I didn't expect to find this cabin again after that night.";
-  return "It's me again. You left me outside before, but I kept walking.";
+  if (memory.choice === 'allow') return `I saw you let ${memory.name} inside.`;
+  return `I passed ${memory.name} after you refused them.`;
 }

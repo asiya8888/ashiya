@@ -1,91 +1,57 @@
+import type { GameCharacter } from './characters/types';
 import type { QuestionKey } from './questions';
 import type { VisitorKind } from './visitors';
-import type { GameCharacter } from './characters/types';
+import type { VisitorMemory } from './visitorMemory';
 
 export type Personality = 'nervous' | 'rude' | 'frightened' | 'calm' | 'evasive';
+export type ConversationProfile = Record<QuestionKey, string> & { personality: Personality };
 
-export type ConversationProfile = {
-  age: string;
-  alone: string;
-  cold: string;
-  event: string;
-  origin: string;
-  outside: string;
-  personality: Personality;
+const hashId = (id: string) => [...id].reduce((sum, letter) => sum + letter.charCodeAt(0), 0);
+const pickStable = <T,>(items: T[], hash: number, offset = 0) => items[(hash + offset) % items.length];
+
+const voice = (character: GameCharacter, plain: string) => {
+  const traits = character.personality.toLowerCase();
+  if (character.id === 'twin-sisters') return `Mira: ${plain} Vera: That is our shared answer.`;
+  if (traits.includes('blunt') || traits.includes('laconic')) return plain.split(/[.!?]/)[0] + '.';
+  if (traits.includes('formal') || traits.includes('disciplined')) return `For the record: ${plain}`;
+  if (traits.includes('nervous') || traits.includes('frightened')) return `${plain} Sorry—just keep your voice down.`;
+  if (traits.includes('warm') || traits.includes('grandmother')) return `${plain} There now, dear; one truth at a time.`;
+  if (traits.includes('lyrical') || traits.includes('mysterious') || traits.includes('oblique')) return `${plain} The mountain may phrase it differently.`;
+  if (traits.includes('clinical')) return `${plain} That is the useful answer, not necessarily the comforting one.`;
+  return plain;
 };
 
-const pick = <T,>(items: T[]) => items[Math.floor(Math.random() * items.length)];
-
-const personalities: Personality[] = ['nervous', 'rude', 'frightened', 'calm', 'evasive'];
-const ages = ['twenty-four', 'thirty-one', 'forty-two', 'nineteen', 'fifty-eight'];
-
-const humanProfile = (): ConversationProfile => ({
-  age: pick(ages),
-  alone: pick([
-    "Yes. I haven't seen another person for hours.",
-    'No. I was with my sister earlier, but we got separated near the ridge.',
-    'I was with two hikers before the wind got too loud to hear them.',
-  ]),
-  cold: pick([
-    "My hands are freezing. I don't think I've felt this cold in years.",
-    "Yes. I'm trying to keep talking so I don't panic.",
-    'I can barely feel my face anymore.',
-  ]),
-  event: pick([
-    'I lost the trail when the snow covered the markers.',
-    'My car slid off the lower road and I walked until I saw your light.',
-    'I got separated from my group before sunset.',
-  ]),
-  origin: pick([
-    'From the northern trail near the mountain pass.',
-    'There is a small village on the other side of the mountain.',
-    'From the lower road, maybe three miles back.',
-  ]),
-  outside: pick([
-    'Mostly snow and wind. I can barely see the trees.',
-    'The path is gone. Everything looks flat and white.',
-    'There are tracks behind me, but they might be mine.',
-  ]),
-  personality: pick(personalities),
-});
-
-const mimicProfile = (night: number): ConversationProfile => ({
-  age: pick(night > 3 ? ['twenty-four', 'thirty-one', 'old enough'] : ['old enough', 'I do not remember exactly']),
-  alone: pick(['Why does that matter?', "Would it change your decision if I wasn't?", 'I am alone enough.']),
-  cold: pick(['Should I be?', 'I know it is cold. I can say that much.', 'Cold is what people call this, yes?']),
-  event: pick([
-    'I followed the light until there was nowhere else to go.',
-    'The woods became confusing, and then your door was here.',
-    'Something happened behind me. I would rather not turn around.',
-  ]),
-  origin: pick(['Somewhere far away.', 'From the trees past your window.', 'From the road, if that is easier to believe.']),
-  outside: pick(['Outside is behind me.', 'The storm is moving. It does not sound empty.', 'You know what is outside. Snow. Trees. Distance.']),
-  personality: pick(['calm', 'evasive', 'frightened']),
-});
-
-const rudePrefix = (text: string) => `I already answered enough, but fine. ${text}`;
-const nervousPrefix = (text: string) => `${text} Sorry, I know I sound scattered.`;
-const evasivePrefix = (text: string) => `${text}`;
-
-export function makeConversation(kind: VisitorKind, night: number) {
-  return kind === 'skinwalker' ? mimicProfile(night) : humanProfile();
-}
-
-export function makeCharacterConversation(character: GameCharacter): ConversationProfile {
-  const known = character.knows?.length ? 'I know a few people who might come this way. That worries me more than it helps.' : humanProfile().alone;
-  const human = humanProfile();
-  const mimic = mimicProfile(4);
+export function makeCharacterConversation(
+  character: GameCharacter,
+  night: number,
+  memories: VisitorMemory[] = [],
+): ConversationProfile {
+  const hash = hashId(character.id);
+  const age = pickStable(['nineteen', 'twenty-seven', 'thirty-four', 'forty-one', 'forty-eight', 'fifty-six', 'sixty-three'], hash);
+  const origin = pickStable(['the lower village', 'the northern ridge', 'the reservoir road', 'the old lodge', 'the eastern pass'], hash, 2);
+  const previous = memories[0];
+  const witness = previous
+    ? `I saw what happened with ${previous.name}. You ${previous.choice === 'allow' ? 'opened the door' : 'left them outside'}.`
+    : 'I have not met another living traveler since dusk.';
+  const mimicSeen = character.kind === 'skinwalker'
+    ? pickStable(['People use that word when a face makes them afraid.', 'I have seen convincing copies. Certainty did not help their victims.', 'Perhaps. A mirror sees a copy every day.'], hash)
+    : pickStable(['Once. It knew my voice, not my memories.', 'I saw something human until it smiled at the wrong moment.', 'Only signs: doubled tracks and answers rehearsed too well.'], hash);
+  const hiding = character.kind === 'skinwalker'
+    ? pickStable(['Only what you have already decided to fear.', 'Yes, but a confession would not make it safer.', 'My history. You would mistake it for evidence.'], hash, 1)
+    : pickStable(['Fear, mostly. I would rather it did not vote for me.', 'One detail: I lied about how close the footsteps were.', `Only this: ${character.inspections[0].toLowerCase()}`], hash, 1);
 
   return {
-    age: character.kind === 'skinwalker' ? 'old enough to knock' : human.age,
-    alone: known,
-    cold: character.kind === 'skinwalker' ? mimic.cold : human.cold,
-    event: character.backstory,
-    origin: character.kind === 'skinwalker' ? mimic.origin : human.origin,
-    outside: character.kind === 'skinwalker'
-      ? 'The storm is crowded. I heard voices moving between the trees.'
-      : 'Snow, wind, and tracks crossing over each other. I could not tell which ones were mine.',
-    personality: character.kind === 'skinwalker' ? 'evasive' : 'calm',
+    name: voice(character, `Call me ${character.name}.`),
+    age: voice(character, character.id === 'lost-boy' ? 'Fifteen. I know I look younger tonight.' : `${age}. This storm has added years.`),
+    origin: voice(character, character.id === 'wanderer' ? 'From the direction that disappears when named.' : `I came from ${origin}.`),
+    event: voice(character, character.backstory),
+    outside: voice(character, night === 1 ? 'Snow, wind, and tracks crossing mine.' : `The storm is worse than night ${night - 1}, and voices are moving between the trees.`),
+    alone: voice(character, character.knows?.length ? `${witness} I am looking for someone I know.` : witness),
+    feeling: voice(character, character.kind === 'skinwalker' ? pickStable(['Patient.', 'Concerned for the people inside.', 'Cold in the way you expect me to be.'], hash) : pickStable(['Exhausted, but thinking clearly.', 'Afraid enough to be honest.', 'Numb, angry, and still standing.'], hash)),
+    mimics: voice(character, mimicSeen),
+    hiding: voice(character, hiding),
+    stay: voice(character, character.kind === 'skinwalker' ? pickStable(['Until the house feels quiet.', 'Only until dawn. You may count every minute.', 'One night, if one night is still a real measure.'], hash) : `At most ${character.stayNights[1]} nights. I will leave sooner if the pass clears.`),
+    personality: character.kind === 'skinwalker' ? 'evasive' : character.personality.includes('nervous') ? 'nervous' : 'calm',
   };
 }
 
@@ -96,11 +62,8 @@ export function answerQuestion(
   key: QuestionKey,
   repeated: boolean,
 ) {
-  if (repeated) return key === 'name' ? `I already told you. It's ${name}.` : 'I already answered that.';
-
-  const answer = key === 'name' ? `I'm ${name}.` : profile[key];
-  if (kind === 'skinwalker' && profile.personality === 'evasive') return evasivePrefix(answer);
-  if (profile.personality === 'rude' && Math.random() > 0.45) return rudePrefix(answer);
-  if (profile.personality === 'nervous' && Math.random() > 0.35) return nervousPrefix(answer);
-  return answer;
+  void name;
+  void kind;
+  if (repeated) return 'I answered that already. Ask what you truly want to know.';
+  return profile[key];
 }
