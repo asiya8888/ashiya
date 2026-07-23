@@ -81,6 +81,30 @@
   height: 20px;
 }
 
+.living-room-screen .door-frame {
+  background: linear-gradient(90deg, #050302, #24150d 48%, #050302);
+  border-color: #160c07;
+  box-shadow: 0 0 38px #000e, inset 0 0 16px #000;
+  z-index: 6;
+}
+
+.living-room-screen .door {
+  background:
+    linear-gradient(90deg, #080403, #20120b 45%, #0b0604),
+    repeating-linear-gradient(90deg, transparent 0 22px, #ffffff05 23px 24px);
+  border-color: #170c07;
+  box-shadow: inset 0 0 42px #000b, inset 12px 0 24px #0008;
+}
+
+.living-room-screen .door-panel {
+  background: linear-gradient(90deg, #0b0604, #21130c 50%, #0a0503);
+  border-color: #5a39264d;
+}
+
+.living-room-screen .door-grain { opacity: .42; }
+.living-room-screen .lock-plate,
+.living-room-screen .knob { filter: brightness(1.35); }
+
 .living-room-screen .fireplace {
   background:
     repeating-linear-gradient(0deg, transparent 0 31px, #0d0907 32px 35px),
