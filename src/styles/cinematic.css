@@ -21,20 +21,20 @@
   inset: 0;
 }
 .living-room-screen .cabin::after {
-  background: radial-gradient(ellipse at 47% 76%, #0002 0 8%, #000a 42%, #000e 100%);
+  background: radial-gradient(ellipse at 47% 76%, #0001 0 9%, #0006 44%, #000b 100%);
   inset: 0;
   opacity: 1;
   pointer-events: none;
   z-index: 5;
 }
 .living-room-screen .wall-planks {
-  background-color: #090705;
+  background-color: #130c08;
   background-image: repeating-linear-gradient(
     to bottom,
-    #0c0907 0 15px,
-    #100c09 16px 29px,
-    #030302 30px 35px,
-    #080604 36px 48px
+    #160e09 0 15px,
+    #21140d 16px 29px,
+    #080503 30px 35px,
+    #140c08 36px 48px
   );
   opacity: 1;
 }
