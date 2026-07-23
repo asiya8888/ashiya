@@ -23,6 +23,8 @@
 @import './styles/responsive.css';
 @import './styles/responsive-mobile.css';
 @import './styles/cinematic.css';
+@import './styles/living-room.css';
+@import './styles/living-room-details.css';
 
 :root {
   color: #d6dce4;

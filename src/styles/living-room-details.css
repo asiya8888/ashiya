@@ -1,0 +1,110 @@
+.hearth-stone {
+  background: repeating-linear-gradient(0deg, #8a715c 0 27px, #3e3027 28px 32px);
+  bottom: 26px;
+  height: 158px;
+  position: absolute;
+  width: 42px;
+}
+.hearth-stone-left { left: 13px; }
+.hearth-stone-right { right: 13px; }
+
+.living-room-screen .fire {
+  animation: livingFlame 1.05s ease-in-out infinite alternate;
+  background: radial-gradient(ellipse at 50% 85%, #fff3aa 0 12%, #ff9b32 32%, #c52f0a 57%, transparent 70%);
+  bottom: 23px;
+  filter: drop-shadow(0 0 12px #ff7b22);
+  position: absolute;
+  transform-origin: 50% 100%;
+}
+.living-room-screen .fire-left { height: 72px; left: 28px; width: 54px; }
+.living-room-screen .fire-center { animation-delay: -.55s; height: 102px; left: 48px; width: 62px; }
+.living-room-screen .fire-right { animation-delay: -.25s; height: 65px; left: 80px; width: 48px; }
+.living-room-screen .ember-bed { bottom: 14px; left: 17px; width: 102px; }
+
+.fire-log {
+  background: linear-gradient(#321309, #7e3518 50%, #1a0804);
+  border-radius: 9px;
+  bottom: 16px;
+  height: 17px;
+  position: absolute;
+  width: 92px;
+  z-index: 2;
+}
+.fire-log-left { left: 19px; transform: rotate(9deg); }
+.fire-log-right { right: 18px; transform: rotate(-10deg); }
+
+.winter-moon {
+  background: #dceaf2;
+  border-radius: 50%;
+  box-shadow: 0 0 22px #cceaffaa;
+  height: 34px;
+  position: absolute;
+  right: 13%;
+  top: 13%;
+  width: 34px;
+}
+.pine {
+  border-bottom: 115px solid #07110f;
+  border-left: 45px solid transparent;
+  border-right: 45px solid transparent;
+  bottom: 21%;
+  filter: drop-shadow(0 0 5px #000);
+  height: 0;
+  position: absolute;
+  width: 0;
+}
+.pine-left { left: -6%; }
+.pine-right { right: 4%; transform: scale(.72); transform-origin: bottom; }
+.snow-bank { background: #c7dce7; border-radius: 50% 50% 0 0; bottom: 0; height: 28%; left: -10%; position: absolute; width: 120%; }
+
+.living-room-screen .living-sofa {
+  bottom: 11vh;
+  height: 158px;
+  left: 8%;
+  width: 280px;
+  z-index: 4;
+}
+.living-room-screen .sofa-back { height: 108px; left: 18px; width: 244px; }
+.living-room-screen .sofa-seat { height: 67px; width: 280px; }
+.living-room-screen .sofa-back,
+.living-room-screen .sofa-seat,
+.sofa-arm,
+.sofa-cushion { background: linear-gradient(135deg, #34443f, #172723 65%, #0b1311); border: 1px solid #71817833; }
+.sofa-arm { border-radius: 12px; bottom: 9px; height: 72px; position: absolute; width: 38px; z-index: 3; }
+.sofa-arm-left { left: -7px; }
+.sofa-arm-right { right: -7px; }
+.sofa-cushion { border-radius: 9px; bottom: 29px; height: 44px; position: absolute; width: 111px; z-index: 2; }
+.sofa-cushion-left { left: 25px; transform: rotate(1deg); }
+.sofa-cushion-right { right: 25px; transform: rotate(-1deg); }
+.sofa-throw { background: repeating-linear-gradient(90deg, #7e3f2c 0 8px, #ad7656 9px 13px); height: 88px; position: absolute; right: 36px; top: 15px; transform: rotate(-6deg); width: 65px; }
+
+.living-rug {
+  background: repeating-radial-gradient(ellipse, #8a4a2d 0 12px, #d19a62 13px 16px, #4b281c 17px 28px);
+  border: 5px solid #2b160e;
+  border-radius: 50%;
+  bottom: 3vh;
+  height: 90px;
+  left: 31%;
+  opacity: .8;
+  position: absolute;
+  transform: perspective(220px) rotateX(58deg);
+  width: 38%;
+  z-index: 2;
+}
+
+.wood-basket { border: 5px solid #59351d; border-radius: 5px 5px 18px 18px; bottom: 10vh; height: 54px; left: calc(52% + 160px); position: absolute; width: 76px; z-index: 4; }
+.wood-basket span { background: #6f371b; border-radius: 7px; bottom: 20px; height: 18px; position: absolute; transform: rotate(-65deg); width: 70px; }
+.wood-basket span:nth-child(2) { transform: rotate(-48deg); }
+.wood-basket span:nth-child(3) { transform: rotate(-78deg); }
+
+@keyframes livingFlame {
+  from { opacity: .82; transform: scale(.9, 1) rotate(-2deg); }
+  to { opacity: 1; transform: scale(1.08, .93) rotate(2deg); }
+}
+
+@media (max-width: 760px) {
+  .living-room-screen .window-frame { left: 3%; width: 36%; }
+  .living-room-screen .fireplace { height: 190px; left: 50%; transform: translateX(-50%) scale(.78); transform-origin: bottom; width: 230px; }
+  .living-room-screen .living-sofa { left: 2%; transform: scale(.64); transform-origin: bottom left; }
+  .wood-basket { display: none; }
+}

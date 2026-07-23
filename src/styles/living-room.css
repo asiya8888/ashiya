@@ -1,0 +1,127 @@
+.cabin-room:nth-child(2) {
+  background:
+    linear-gradient(90deg, #0008, transparent 16% 84%, #0009),
+    repeating-linear-gradient(0deg, transparent 0 67px, #080402 68px 72px),
+    repeating-linear-gradient(90deg, #2b190f 0 5px, #412718 6px 74px, #1a0e08 75px 80px);
+}
+
+.cabin-room:nth-child(2)::after {
+  background:
+    linear-gradient(170deg, transparent 0 47%, #180d07 48%),
+    repeating-linear-gradient(92deg, #4b2b18 0 3px, #281409 4px 82px, #120905 83px 87px);
+  bottom: 0;
+  content: "";
+  height: 29%;
+  left: 0;
+  position: absolute;
+  right: 0;
+  z-index: 0;
+}
+
+.living-ambience {
+  background:
+    radial-gradient(ellipse at 51% 70%, #ff9a3c42, transparent 34%),
+    radial-gradient(ellipse at 20% 32%, #8fc3e71c, transparent 29%);
+  inset: 0;
+  pointer-events: none;
+  position: absolute;
+  z-index: 1;
+}
+
+.living-beams {
+  border-top: 18px solid #170c07;
+  box-shadow: inset 0 8px #56321c, 0 12px 24px #0008;
+  height: 22px;
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 48px;
+  z-index: 2;
+}
+
+.living-room-screen .window-frame {
+  background: linear-gradient(90deg, #120905, #5a341d 48%, #120905);
+  border: 9px solid #1b0e08;
+  box-shadow: 0 14px 30px #000a, 0 0 34px #83bce329;
+  height: min(36vh, 270px);
+  left: 7%;
+  top: 14vh;
+  width: min(33%, 420px);
+  z-index: 3;
+}
+
+.living-room-screen .window {
+  background: linear-gradient(180deg, #07111f, #19324b 66%, #c2d9e5 67%);
+  border: 0;
+  height: 100%;
+  overflow: hidden;
+  position: relative;
+}
+
+.living-room-screen .window::before,
+.living-room-screen .window::after {
+  background: linear-gradient(90deg, #1b0e08, #60391f, #1b0e08);
+  box-shadow: 0 0 7px #000;
+  content: "";
+  position: absolute;
+  z-index: 4;
+}
+
+.living-room-screen .window::before { height: 100%; left: calc(50% - 5px); width: 10px; }
+.living-room-screen .window::after { height: 10px; left: 0; top: calc(50% - 5px); width: 100%; }
+
+.living-room-screen .window-sill {
+  background: linear-gradient(#704526, #251208);
+  bottom: -20px;
+  height: 20px;
+}
+
+.living-room-screen .fireplace {
+  background:
+    repeating-linear-gradient(0deg, transparent 0 31px, #28170f 32px 35px),
+    repeating-linear-gradient(90deg, #765c48 0 52px, #3b2d25 53px 57px);
+  border: 0;
+  bottom: 12vh;
+  box-shadow: 0 24px 36px #000b, 0 0 70px #e26d2633;
+  height: 245px;
+  left: 52%;
+  transform: translateX(-50%);
+  width: 260px;
+  z-index: 4;
+}
+
+.living-room-screen .fireplace::before { display: none; }
+
+.living-room-screen .mantel {
+  background: linear-gradient(#825532, #3a1d0d 58%, #170a04);
+  border-radius: 3px;
+  box-shadow: 0 9px 14px #000b;
+  height: 28px;
+  left: -22px;
+  top: -24px;
+  width: 304px;
+}
+
+.hearth-opening {
+  background: radial-gradient(ellipse at 50% 80%, #80230d99, #080301 70%);
+  border: 9px solid #332219;
+  border-radius: 86px 86px 5px 5px;
+  bottom: 25px;
+  box-shadow: inset 0 0 28px #000;
+  height: 162px;
+  left: 50%;
+  overflow: hidden;
+  position: absolute;
+  transform: translateX(-50%);
+  width: 154px;
+}
+
+.hearth-base {
+  background: linear-gradient(#75604f, #30231b);
+  bottom: -13px;
+  box-shadow: 0 12px 18px #0009;
+  height: 27px;
+  left: -18px;
+  position: absolute;
+  width: 296px;
+}

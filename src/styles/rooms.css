@@ -109,29 +109,6 @@
   width: 210px;
 }
 
-.coat-rack {
-  background: linear-gradient(#120b08, #3a2418);
-  bottom: 88px;
-  height: 210px;
-  left: 62%;
-  position: absolute;
-  width: 10px;
-  z-index: 2;
-}
-
-.coat-rack::before,
-.coat-rack::after {
-  background: #19110d;
-  content: "";
-  height: 72px;
-  position: absolute;
-  top: 44px;
-  width: 42px;
-}
-
-.coat-rack::before { border-radius: 45% 20% 40% 30%; left: -35px; }
-.coat-rack::after { border-radius: 20% 45% 30% 40%; right: -35px; }
-
 .kitchen-window,
 .bedroom-window {
   background: linear-gradient(#08111d, #16273d);
