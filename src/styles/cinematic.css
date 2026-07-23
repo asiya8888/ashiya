@@ -12,29 +12,34 @@
 .living-room-screen .hotspot-front-door { display: none; }
 
 .living-room-screen .cabin {
-  background:
-    radial-gradient(ellipse at 47% 82%, #6b261a24, transparent 25%),
-    linear-gradient(90deg, #010202 0%, #090807 42%, #030303 100%);
+  background: #020202;
+  background-image: none;
   box-shadow: inset 0 0 120px #000, inset 0 -130px 100px #000;
 }
+.living-room-screen .cabin::before {
+  background: radial-gradient(ellipse at 47% 82%, #5c1d121f, transparent 19%);
+  inset: 0;
+}
+.living-room-screen .cabin::after {
+  background: radial-gradient(ellipse at 47% 76%, #0002 0 8%, #000a 42%, #000e 100%);
+  inset: 0;
+  opacity: 1;
+  pointer-events: none;
+  z-index: 5;
+}
 .living-room-screen .wall-planks {
-  background:
-    linear-gradient(90deg, #000c, transparent 16% 76%, #000d),
-    repeating-linear-gradient(
-      0deg,
-      #070605 0 3px,
-      #17110d 4px 18px,
-      #100c09 19px 34px,
-      #050403 35px 39px
-    );
+  background-color: #090705;
+  background-image: repeating-linear-gradient(
+    to bottom,
+    #0c0907 0 15px,
+    #100c09 16px 29px,
+    #030302 30px 35px,
+    #080604 36px 48px
+  );
   opacity: 1;
 }
 .living-room-screen .wall-planks::before {
-  background:
-    radial-gradient(ellipse at 18% 28%, #020202 0 7px, transparent 9px),
-    radial-gradient(ellipse at 64% 52%, #020202 0 6px, transparent 8px),
-    radial-gradient(ellipse at 87% 72%, #020202 0 8px, transparent 10px),
-    linear-gradient(180deg, #0004, transparent 35%, #0008);
+  background: linear-gradient(to bottom, #0005, transparent 38%, #000b);
 }
 .living-room-screen .fire {
   animation: singleFlame 1.25s ease-in-out infinite alternate;
