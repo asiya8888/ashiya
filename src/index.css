@@ -27,6 +27,7 @@
 @import './styles/living-room-details.css';
 
 :root {
+  --button-primary: #102a44;
   color: #d6dce4;
   background: #020306;
   font-family: Inter, system-ui, sans-serif;
@@ -99,7 +100,7 @@ h1 { font-size: clamp(2.1rem, 6vw, 4.5rem); margin-top: 8px; }
 }
 
 .stats button {
-  background: #173a5e;
+  background: var(--button-primary);
   color: #edf2f7;
   font-weight: 800;
   padding: 10px 12px;

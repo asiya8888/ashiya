@@ -46,7 +46,7 @@
 
 .cinematic-game .door-prompt h2 { font-size: 2.35rem; }
 .cinematic-game .door-prompt p { color: #99958e; }
-.cinematic-game .door-choices button { background: #173a5e; border: 1px solid #527da680; letter-spacing: .08em; }
+.cinematic-game .door-choices button { background: var(--button-primary); border: 1px solid #527da680; letter-spacing: .08em; }
 
 .peephole-blackout { animation: peepholeFade .55s ease both; background: #000; inset: 0; position: fixed; z-index: 100; }
 @keyframes peepholeFade { 0% { opacity: 0; } 55%, 100% { opacity: 1; } }
@@ -90,7 +90,7 @@
 .question-list button:hover { background: #ffffff0c; border-color: #416f99; color: #eeeae3; }
 .decision-row { display: grid; gap: 10px; grid-template-columns: 1fr 1fr; margin-top: 6px; }
 .decision-row button { color: #eee9df; font-weight: 700; padding: 14px; text-transform: uppercase; }
-.allow-button { background: #173a5e; }
+.allow-button { background: var(--button-primary); }
 .refuse-button { background: #17191c; border: 1px solid #ffffff1f; }
 .visitor-dialogue-box .interaction-log { background: transparent; border: 0; border-left: 2px solid #702126; padding: 5px 0 5px 14px; }
 .visitor-dialogue-box .interaction-log p { color: #bdb8af; }

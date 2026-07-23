@@ -58,7 +58,7 @@
 }
 
 .choices button {
-  background: #173a5e;
+  background: var(--button-primary);
   color: #edf2f7;
   font-weight: 800;
   padding: 14px 16px;

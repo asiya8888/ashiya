@@ -82,7 +82,7 @@
 }
 
 .guest-check {
-  background: #173a5e;
+  background: var(--button-primary);
   color: #edf2f7;
 }
 .seated-guest--photo {
