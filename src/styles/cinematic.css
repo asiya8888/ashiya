@@ -11,6 +11,56 @@
 .living-room-screen .touch-move-pad,
 .living-room-screen .hotspot-front-door { display: none; }
 
+.living-room-screen .cabin {
+  background:
+    radial-gradient(ellipse at 47% 82%, #6b261a24, transparent 25%),
+    linear-gradient(90deg, #010202 0%, #090807 42%, #030303 100%);
+  box-shadow: inset 0 0 120px #000, inset 0 -130px 100px #000;
+}
+.living-room-screen .wall-planks {
+  background:
+    linear-gradient(90deg, #000c, transparent 16% 76%, #000d),
+    repeating-linear-gradient(
+      0deg,
+      #070605 0 3px,
+      #17110d 4px 18px,
+      #100c09 19px 34px,
+      #050403 35px 39px
+    );
+  opacity: 1;
+}
+.living-room-screen .wall-planks::before {
+  background:
+    radial-gradient(ellipse at 18% 28%, #020202 0 7px, transparent 9px),
+    radial-gradient(ellipse at 64% 52%, #020202 0 6px, transparent 8px),
+    radial-gradient(ellipse at 87% 72%, #020202 0 8px, transparent 10px),
+    linear-gradient(180deg, #0004, transparent 35%, #0008);
+}
+.living-room-screen .fire {
+  animation: singleFlame 1.25s ease-in-out infinite alternate;
+  background: linear-gradient(180deg, #fff1bd 0 10%, #f6a23b 38%, #9d2c16 72%, transparent 76%);
+  border-radius: 52% 48% 46% 54% / 72% 70% 30% 28%;
+  bottom: 24px;
+  box-shadow: 0 0 18px #ed6a28aa, 0 0 46px #9b251b66;
+  clip-path: polygon(50% 0, 72% 27%, 82% 58%, 68% 100%, 30% 100%, 17% 60%, 31% 29%);
+  height: 72px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 46px;
+}
+.living-room-screen .ember-bed {
+  background: radial-gradient(ellipse, #b43b20 0 18%, #3a100b 44%, transparent 72%);
+  bottom: 15px;
+  height: 16px;
+  left: 18%;
+  width: 64%;
+}
+
+@keyframes singleFlame {
+  from { filter: brightness(.82); transform: translateX(-50%) rotate(-1deg) scale(.94, 1); }
+  to { filter: brightness(1.12); transform: translateX(-50%) rotate(1deg) scale(1.04, .96); }
+}
+
 .cinematic-game .hud {
   background: linear-gradient(#020304d9, transparent);
   border: 0;
