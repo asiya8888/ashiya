@@ -10,15 +10,17 @@
 
 .living-room-screen .fire {
   animation: livingFlame 1.05s ease-in-out infinite alternate;
-  background: radial-gradient(ellipse at 50% 85%, #fff3aa 0 12%, #ff9b32 32%, #c52f0a 57%, transparent 70%);
+  background: linear-gradient(180deg, #fff3b0 0 9%, #f39732 36%, #9e260d 68%, transparent 72%);
+  border-radius: 52% 48% 46% 54% / 76% 72% 28% 24%;
   bottom: 23px;
+  clip-path: polygon(50% 0, 71% 29%, 82% 62%, 67% 100%, 31% 100%, 17% 61%, 32% 28%);
   filter: drop-shadow(0 0 12px #ff7b22);
   position: absolute;
   transform-origin: 50% 100%;
 }
-.living-room-screen .fire-left { height: 72px; left: 28px; width: 54px; }
-.living-room-screen .fire-center { animation-delay: -.55s; height: 102px; left: 48px; width: 62px; }
-.living-room-screen .fire-right { animation-delay: -.25s; height: 65px; left: 80px; width: 48px; }
+.living-room-screen .fire-left,
+.living-room-screen .fire-right { display: none; }
+.living-room-screen .fire-center { height: 94px; left: 46px; width: 56px; }
 .living-room-screen .ember-bed { bottom: 14px; left: 17px; width: 102px; }
 
 .fire-log {
